@@ -1,10 +1,21 @@
 /* ─── SUS Results embed ─── */
-.sus-results-wrap { font-family: inherit; }
+.sus-results-wrap { 
+  font-family: inherit; 
+  box-sizing: border-box;
+}
+
+/* Ensure all elements calculate sizing properly */
+.sus-results-wrap *, 
+.sus-results-wrap *::before, 
+.sus-results-wrap *::after {
+  box-sizing: border-box;
+}
 
 /* Metric summary cards */
 .sus-kpi-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* Reduced min-width to 130px to prevent overflow on very small devices */
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 1rem;
   margin: 2rem 0;
 }
@@ -44,13 +55,10 @@
   margin: 2rem 0;
 }
 #susGaugeEl { max-width: 100%; height: auto; }
-.sus-chart-wrap canvas { max-width: 100%; }
-
-.sus-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-@media (max-width: 100%) { .sus-gauge-row { grid-template-columns: 1fr; } }
+.sus-chart-wrap canvas { max-width: 100%; height: auto !important; }
 
 .sus-gauge-block { text-align: center; }
-.sus-gauge-canvas { position: relative; display: inline-block; }
+.sus-gauge-canvas { position: relative; display: inline-block; max-width: 100%; }
 #susGaugeEl { display: block; margin: 0 auto; }
 .sus-gauge-overlay {
   position: absolute;
@@ -59,6 +67,7 @@
   transform: translateX(-50%);
   text-align: center;
   pointer-events: none;
+  width: 100%; /* Prevent squeezing text on small spaces */
 }
 .sus-gauge-overlay .g-big { font-size: 2.4rem; font-weight: 700; color: #0F6E56; line-height: 1; }
 .sus-gauge-overlay .g-sub { font-size: 0.75rem; color: #6b7280; }
@@ -144,10 +153,17 @@
   color: #6b7280;
   margin-bottom: 1rem;
 }
-.sus-chart-wrap { position: relative; }
+.sus-chart-wrap { position: relative; width: 100%; overflow: hidden; }
 
 /* Question rows */
-.sus-q-tabs { display: flex; gap: 0; border-bottom: 1px solid #e5e7eb; margin: 1.5rem 0 1rem; }
+.sus-q-tabs { 
+  display: flex; 
+  gap: 0; 
+  border-bottom: 1px solid #e5e7eb; 
+  margin: 1.5rem 0 1rem; 
+  overflow-x: auto; /* Allows tabs to scroll on small mobile instead of breaking layout */
+  -webkit-overflow-scrolling: touch;
+}
 .sus-q-tab {
   padding: 8px 18px;
   font-size: 0.82rem;
@@ -158,6 +174,7 @@
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
+  white-space: nowrap; /* Keeps tab items on a single line */
 }
 .sus-q-tab.active { color: #0F6E56; border-bottom-color: #0F6E56; }
 .sus-q-panel { display: none; }
@@ -166,15 +183,15 @@
 .sus-q-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 0.9rem 1.1rem;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Allows shifting pieces downward if screen gets too tight */
 }
 .sus-q-num { font-size: 0.72rem; font-weight: 700; color: #9ca3af; min-width: 26px; }
-.sus-q-text { font-size: 0.83rem; color: #374151; flex: 1; min-width: 120px; line-height: 1.45; }
+.sus-q-text { font-size: 0.83rem; color: #374151; flex: 1; min-width: 150px; line-height: 1.45; }
 .sus-q-type {
   font-size: 0.68rem;
   padding: 2px 8px;
@@ -194,11 +211,17 @@
 .sus-legend-dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 4px; }
 
 /* Score table */
-.sus-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+.sus-table-wrap { 
+  overflow-x: auto; 
+  margin: 1.5rem 0; 
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
 .sus-resp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
 .sus-resp-table th {
   text-align: left;
-  padding: 9px 11px;
+  padding: 12px 14px;
   font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -206,8 +229,9 @@
   color: #6b7280;
   border-bottom: 1px solid #e5e7eb;
   white-space: nowrap;
+  background: #f9fafb;
 }
-.sus-resp-table td { padding: 9px 11px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+.sus-resp-table td { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
 .sus-resp-table tr:hover td { background: #f9fafb; }
 .sus-badge {
   display: inline-block;
@@ -218,7 +242,7 @@
 }
 
 /* Quotes */
-.sus-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem; margin: 1.2rem 0; }
+.sus-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.1rem; margin: 1.2rem 0; }
 .sus-quote-card {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -236,8 +260,8 @@
   font-family: Georgia, serif;
   line-height: 1;
 }
-.sus-quote-card p { font-size: 0.85rem; color: #374151; line-height: 1.6; position: relative; }
-.sus-quote-card .qmeta { font-size: 0.72rem; color: #9ca3af; margin-top: 8px; font-weight: 500; }
+.sus-quote-card p { font-size: 0.85rem; color: #374151; line-height: 1.6; position: relative; z-index: 1; }
+.sus-quote-card .qmeta { font-size: 0.72rem; color: #9ca3af; margin-top: 8px; font-weight: 500; position: relative; z-index: 1; }
 
 /* Suggest */
 .sus-suggest-list { display: grid; gap: 0.75rem; margin: 1.2rem 0; }
@@ -268,4 +292,35 @@
   color: #1D9E75;
   margin: 2rem 0 0.75rem;
 }
-</style>
+
+/* ─── Media Queries for Mobile/Tablet Optimization ─── */
+@media (max-width: 768px) { 
+  .sus-gauge-row { 
+    grid-template-columns: 1fr; 
+    gap: 1.5rem;
+  }
+  .sus-interp-grid {
+    grid-template-columns: 1fr; /* Interpretation grid stacks on mobile */
+  }
+  .sus-chart-card {
+    padding: 1rem; /* Saves whitespace padding on small displays */
+  }
+}
+
+@media (max-width: 480px) {
+  .sus-q-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .sus-q-bar-wrap {
+    width: 100%; /* Progress bars occupy full width on tiny mobile screens */
+  }
+  .sus-q-score {
+    text-align: left;
+    align-self: flex-end;
+  }
+  .sus-scale-bands {
+    font-size: 0.6rem; /* Keeps scale labels legible without overlaps */
+  }
+}
