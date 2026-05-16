@@ -43,7 +43,11 @@
   align-items: center;
   margin: 2rem 0;
 }
-@media (max-width: 680px) { .sus-gauge-row { grid-template-columns: 1fr; } }
+#susGaugeEl { max-width: 100%; height: auto; }
+.sus-chart-wrap canvas { max-width: 100%; }
+
+.sus-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 100%) { .sus-gauge-row { grid-template-columns: 1fr; } }
 
 .sus-gauge-block { text-align: center; }
 .sus-gauge-canvas { position: relative; display: inline-block; }
