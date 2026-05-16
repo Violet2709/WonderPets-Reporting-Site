@@ -82,75 +82,88 @@
         '</div>';
     }).join('');
   }
-  buildQRows('susQAll','all');
-  buildQRows('susQPos','pos');
-  buildQRows('susQNeg','neg');
+  
+  // Scoped initialization on page content loads
+  function initDOMElements() {
+    buildQRows('susQAll','all');
+    buildQRows('susQPos','pos');
+    buildQRows('susQNeg','neg');
 
-  /* Tab switch */
+    /* Respondent table */
+    var tbody = document.getElementById('susRespBody');
+    if(tbody) {
+      tbody.innerHTML = RESPONDENTS.map(function(r,i) {
+        var g = gradeColor(r.sus);
+        return '<tr>' +
+          '<td style="color:#9ca3af;font-size:0.78rem">' + (i+1) + '</td>' +
+          '<td>' + r.age + '</td>' +
+          '<td>' + r.gender + '</td>' +
+          '<td style="font-size:0.78rem">' + r.course + '</td>' +
+          '<td>' + r.exp + '</td>' +
+          '<td>' + r.freq + '</td>' +
+          '<td style="font-weight:600">' + r.sus + '</td>' +
+          '<td><span class="sus-badge" style="background:' + g.bg + ';color:' + g.color + '">' + g.label + '</span></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    /* Likes */
+    var likesGrid = document.getElementById('susLikesGrid');
+    if(likesGrid) {
+      likesGrid.innerHTML = LIKES.map(function(l,i) {
+        return '<div class="sus-quote-card"><p>' + l + '</p><div class="qmeta">Respondent ' + (i+1) + '</div></div>';
+      }).join('');
+    }
+
+    /* Suggestions */
+    var suggestList = document.getElementById('susSuggestList');
+    if(suggestList) {
+      suggestList.innerHTML = SUGGESTIONS.map(function(s) {
+        return '<div class="sus-suggest-item"><div class="sus-suggest-icon">' + s.icon + '</div><div class="sus-suggest-text">' + s.text + '</div></div>';
+      }).join('');
+    }
+  }
+
+  /* Global Tab switch logic mapped window-wide explicitly safely */
   window.susSwitchTab = function(tab, btn) {
     document.querySelectorAll('.sus-q-tab').forEach(function(b){b.classList.remove('active');});
     document.querySelectorAll('.sus-q-panel').forEach(function(p){p.classList.remove('active');});
     btn.classList.add('active');
-    document.getElementById('sus-tab-' + tab).classList.add('active');
+    var targetPanel = document.getElementById('sus-tab-' + tab);
+    if(targetPanel) targetPanel.classList.add('active');
   };
 
-  /* Respondent table */
-  var tbody = document.getElementById('susRespBody');
-  if(tbody) {
-    tbody.innerHTML = RESPONDENTS.map(function(r,i) {
-      var g = gradeColor(r.sus);
-      return '<tr>' +
-        '<td style="color:#9ca3af;font-size:0.78rem">' + (i+1) + '</td>' +
-        '<td>' + r.age + '</td>' +
-        '<td>' + r.gender + '</td>' +
-        '<td style="font-size:0.78rem">' + r.course + '</td>' +
-        '<td>' + r.exp + '</td>' +
-        '<td>' + r.freq + '</td>' +
-        '<td style="font-weight:600">' + r.sus + '</td>' +
-        '<td><span class="sus-badge" style="background:' + g.bg + ';color:' + g.color + '">' + g.label + '</span></td>' +
-        '</tr>';
-    }).join('');
-  }
-
-  /* Likes */
-  var likesGrid = document.getElementById('susLikesGrid');
-  if(likesGrid) {
-    likesGrid.innerHTML = LIKES.map(function(l,i) {
-      return '<div class="sus-quote-card"><p>' + l + '</p><div class="qmeta">Respondent ' + (i+1) + '</div></div>';
-    }).join('');
-  }
-
-  /* Suggestions */
-  var suggestList = document.getElementById('susSuggestList');
-  if(suggestList) {
-    suggestList.innerHTML = SUGGESTIONS.map(function(s) {
-      return '<div class="sus-suggest-item"><div class="sus-suggest-icon">' + s.icon + '</div><div class="sus-suggest-text">' + s.text + '</div></div>';
-    }).join('');
-  }
-
-  /* Charts — wait for Chart.js to be ready */
+  /* Charts Loader */
   function initCharts() {
     if(typeof Chart === 'undefined') { setTimeout(initCharts, 100); return; }
 
-    /* Gauge */
+    /* Gauge Arc Canvas Config — Now responsive based on dynamic bounds calculations */
     var gc = document.getElementById('susGaugeEl');
     if(gc) {
       var ctx = gc.getContext('2d');
-      var cx=130, cy=138, r=105, score=72.625;
+      var cx = gc.width / 2;
+      var cy = gc.height - 12; // Dynamic alignment calculation padding
+      var r = (gc.width / 2) - 15; // Responsive fallback boundary calculation radius logic
+      var score = 72.625;
       var endAngle = Math.PI + (score/100)*Math.PI;
+
+      ctx.clearRect(0, 0, gc.width, gc.height);
       ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,2*Math.PI);
       ctx.lineWidth=16; ctx.strokeStyle='#f3f4f6'; ctx.stroke();
+      
       var gr = ctx.createLinearGradient(cx-r,cy,cx+r,cy);
       gr.addColorStop(0,'#e74c3c'); gr.addColorStop(0.38,'#f39c12');
       gr.addColorStop(0.65,'#1D9E75'); gr.addColorStop(1,'#085041');
+      
       ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,endAngle);
       ctx.lineWidth=16; ctx.strokeStyle=gr; ctx.lineCap='round'; ctx.stroke();
+      
       var px=cx+r*Math.cos(endAngle), py=cy+r*Math.sin(endAngle);
       ctx.beginPath(); ctx.arc(px,py,8,0,2*Math.PI);
       ctx.fillStyle='#085041'; ctx.fill();
     }
 
-    /* Distribution */
+    /* Distribution Chart Config */
     var distEl = document.getElementById('susDistChart');
     if(distEl) {
       new Chart(distEl, {
@@ -169,13 +182,13 @@
           plugins:{legend:{display:false}},
           scales:{
             y:{min:0,max:110,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},callback:function(v){return v<=100?v:null;}}},
-            x:{grid:{display:false},ticks:{font:{size:9}}}
+            x:{grid:{display:false},ticks:{font:{size:9},autoSkip:true,maxRotation:45}} // AutoSkip helps mobile view readability
           }
         }
       });
     }
 
-    /* Radar */
+    /* Radar Chart Config */
     var radarEl = document.getElementById('susRadarChart');
     if(radarEl) {
       new Chart(radarEl,{
@@ -186,36 +199,36 @@
             label:'Avg Score', data: QUESTIONS.map(function(q){return q.avg;}),
             backgroundColor:'rgba(29,158,117,0.10)', borderColor:'#1D9E75',
             pointBackgroundColor: QUESTIONS.map(function(q){return q.type==='pos'?'#1D9E75':'#D85A30';}),
-            pointBorderColor:'#fff', pointRadius:5, borderWidth:2
+            pointBorderColor:'#fff', pointRadius:4, borderWidth:2
           }]
         },
         options:{
           responsive:true, maintainAspectRatio:false,
           plugins:{legend:{display:false}},
-          scales:{r:{min:1,max:5,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,0.06)'},pointLabels:{font:{size:11}}}}
+          scales:{r:{min:1,max:5,ticks:{stepSize:1,font:{size:9}},grid:{color:'rgba(0,0,0,0.06)'},pointLabels:{font:{size:10}}}}
         }
       });
     }
 
-    /* Gender */
+    /* Gender Pie Chart Config */
     var genderEl = document.getElementById('susGenderChart');
     if(genderEl) {
-      new Chart(genderEl,{type:'doughnut',data:{labels:['Female','Male'],datasets:[{data:[14,6],backgroundColor:['#534AB7','#9FE1CB'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+      new Chart(genderEl,{type:'doughnut',data:{labels:['Female','Male'],datasets:[{data:[14,6],backgroundColor:['#534AB7','#9FE1CB'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'});
     }
 
-    /* Experience */
+    /* Experience Pie Chart Config */
     var expEl = document.getElementById('susExpChart');
     if(expEl) {
-      new Chart(expEl,{type:'doughnut',data:{labels:['No experience','Has experience'],datasets:[{data:[13,7],backgroundColor:['#1D9E75','#D85A30'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+      new Chart(expEl,{type:'doughnut',data:{labels:['No experience','Has experience'],datasets:[{data:[13,7],backgroundColor:['#1D9E75','#D85A30'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'});
     }
 
-    /* Frequency */
+    /* Frequency Pie Chart Config */
     var freqEl = document.getElementById('susFreqChart');
     if(freqEl) {
-      new Chart(freqEl,{type:'doughnut',data:{labels:['Daily','Weekly','Never'],datasets:[{data:[17,1,2],backgroundColor:['#534AB7','#BA7517','#888780'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+      new Chart(freqEl,{type:'doughnut',data:{labels:['Daily','Weekly','Never'],datasets:[{data:[17,1,2],backgroundColor:['#534AB7','#BA7517','#888780'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'});
     }
 
-    /* Age */
+    /* Age Distribution Chart Config */
     var ageEl = document.getElementById('susAgeChart');
     if(ageEl) {
       new Chart(ageEl,{
@@ -226,9 +239,14 @@
     }
   }
 
+  // Dual engine synchronization wrapper bootstrap init logic
   if(document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCharts);
+    document.addEventListener('DOMContentLoaded', function() {
+      initDOMElements();
+      initCharts();
+    });
   } else {
+    initDOMElements();
     initCharts();
   }
 })();
