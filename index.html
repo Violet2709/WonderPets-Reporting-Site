@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HCI Final Project | Web Reporting Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #e8f4fd;
+      --surface: #ffffff;
+      --surface2: #d0eaf9;
+      --border: #a8d4f0;
+      --accent: #1a7fd4;
+      --accent2: #0ea5c9;
+      --accent3: #6366f1;
+      --text: #1a2e44;
+      --muted: #5a87aa;
+      --soft: #2e6497;
+      --white: #ffffff;
+      --good: #0ea572;
+      --warn: #d97706;
+      --danger: #dc2626;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      background: rgba(232, 244, 253, 0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      z-index: 1001;
+    }
+
+    .logo span { color: #8B4513; }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--soft);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+      background: var(--surface2);
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1001;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+    }
+
+    .hamburger:hover { border-color: var(--accent); }
+
+    .hamburger span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--soft);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--white); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--white); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(232, 244, 253, 0.99);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+      padding: 1rem 1.5rem 1.5rem;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .mobile-menu.open {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mobile-menu ul li a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--soft);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .mobile-menu ul li a:hover {
+      color: var(--accent);
+      background: var(--surface2);
+      border-color: var(--border);
+    }
+
+    .mobile-menu ul li a .menu-icon { font-size: 1rem; width: 24px; text-align: center; }
+    .mobile-menu-divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+    .mobile-menu-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 0 1rem; margin-bottom: 0.5rem; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 40%, rgba(26,127,212,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(99,102,241,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(14,165,201,0.12) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.3;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      max-width: 860px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: var(--soft);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      background: var(--surface);
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--soft);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-blue   { background: rgba(26,127,212,0.12); color: #1a5fa0; border: 1px solid rgba(26,127,212,0.3); }
+    .tag-purple { background: rgba(99,102,241,0.12); color: #4338ca; border: 1px solid rgba(99,102,241,0.3); }
+    .tag-cyan   { background: rgba(14,165,201,0.12); color: #0e7490; border: 1px solid rgba(14,165,201,0.3); }
+
+    /* ── SECTIONS ── */
+    .section { padding: 6rem 2rem; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-desc {
+      color: var(--soft);
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin-bottom: 3rem;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* ── MEMBERS ── */
+    #members { padding: 5rem 2rem; background: var(--surface); }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .member-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .member-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .member-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .member-card:hover::before { opacity: 1; }
+
+    .member-card img {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      margin-bottom: 0.75rem;
+      background: var(--surface2);
+    }
+
+    .member-name { font-weight: 600; font-size: 0.85rem; color: var(--text); margin-bottom: 0.2rem; }
+    .member-role { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: border-color 0.3s;
+    }
+
+    .card:hover { border-color: var(--accent); }
+
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .card p, .card li { font-size: 0.9rem; color: var(--soft); line-height: 1.7; }
+    .card ul { padding-left: 1.2rem; }
+    .card li { margin-bottom: 0.4rem; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── DATA GATHERING ── */
+    #data { background: var(--bg); }
+
+    .instrument-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 0.6rem;
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .instrument-item:hover { border-color: var(--accent); background: var(--surface2); }
+
+    .instrument-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .icon-blue   { background: rgba(59,130,246,0.15); }
+    .icon-purple { background: rgba(139,92,246,0.15); }
+    .icon-cyan   { background: rgba(6,182,212,0.15); }
+    .icon-green  { background: rgba(16,185,129,0.15); }
+
+    .instrument-label { font-size: 0.88rem; color: var(--text); font-weight: 500; }
+    .instrument-sub   { font-size: 0.75rem; color: var(--muted); }
+
+    .instrument-link {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 5px;
+      transition: all 0.2s;
+    }
+
+    .instrument-link:hover { background: rgba(59,130,246,0.15); }
+
+    .respondent-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    thead { background: var(--surface2); }
+
+    th {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.8rem 1rem;
+      color: var(--soft);
+      border-bottom: 1px solid rgba(168,212,240,0.6);
+      word-break: break-all;
+    }
+
+    td:first-child { word-break: normal; font-weight: 600; color: var(--text); }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(59,130,246,0.04); }
+
+    .respondent-hidden { display: none; }
+
+    .show-more-btn {
+      margin-top: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--soft);
+      font-size: 0.8rem;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .show-more-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--surface2); }
+
+    .show-more-btn .count-pill {
+      font-size: 0.7rem;
+      background: var(--surface2);
+      padding: 1px 8px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── PHOTO GALLERY — FIXED ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .gallery-item {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 4 / 3;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 0;
+      position: relative;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-item .placeholder-label {
+      padding: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 540px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── SESSION VIDEO ── */
+    .session-video-section { margin-top: 1.5rem; }
+
+    .session-video-wrapper {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+
+    .session-video-wrapper video { width: 100%; height: 100%; display: block; object-fit: contain; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox-trigger {
+      cursor: zoom-in;
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .lightbox-trigger img { width: 100%; height: 100%; display: block; object-fit: cover; transition: opacity 0.2s, transform 0.3s; }
+    .lightbox-trigger:hover img { opacity: 0.88; transform: scale(1.02); }
+
+    .lightbox-trigger .lb-icon {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: rgba(0,0,0,0.52);
+      color: #fff;
+      width: 30px; height: 30px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-trigger:hover .lb-icon { opacity: 1; }
+
+    .lb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      animation: lbFadeIn 0.2s ease;
+    }
+
+    .lb-overlay.active { display: flex; }
+
+    @keyframes lbFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .lb-overlay img {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 12px;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: lbScale 0.25s ease;
+    }
+
+    @keyframes lbScale {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 18px; right: 18px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10000;
+    }
+
+    .lb-close:hover { background: rgba(255,255,255,0.25); }
+
+    .lb-caption {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 0.4rem 1rem;
+      border-radius: 99px;
+      pointer-events: none;
+    }
+
+    /* ── RESULTS ── */
+    #results { background: var(--surface); }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .finding-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      background: var(--bg);
+    }
+
+    .finding-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .finding-header:hover { background: var(--surface2); }
+
+    .severity-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 5px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .sev-high { background: rgba(220,38,38,0.12); color: #b91c1c; border: 1px solid rgba(220,38,38,0.3); }
+    .sev-med  { background: rgba(217,119,6,0.12);  color: #92400e; border: 1px solid rgba(217,119,6,0.3); }
+    .sev-low  { background: rgba(14,165,114,0.12); color: #065f46; border: 1px solid rgba(14,165,114,0.3); }
+
+    .finding-title     { font-weight: 600; font-size: 0.9rem; color: var(--text); flex: 1; }
+    .finding-heuristic { font-size: 0.75rem; color: var(--accent); flex-shrink: 0; }
+
+    .finding-body { padding: 0 1.25rem 1.25rem; display: none; }
+    .finding-body.open { display: block; }
+    .finding-body p { font-size: 0.85rem; color: var(--soft); margin-bottom: 0.75rem; }
+
+    .rec-box {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.83rem;
+      color: var(--soft);
+    }
+
+    .rec-box strong { color: var(--accent); }
+
+    .progress-item { margin-bottom: 1rem; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem; }
+    .progress-label { color: var(--soft); }
+    .progress-val   { color: var(--text); font-weight: 600; }
+    .progress-bar   { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .progress-fill  { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1s ease; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #2563eb); color: white; }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--soft); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+    /* ── WALKTHROUGH — FIXED ── */
+    #walkthrough { background: var(--bg); }
+
+    /* Two-column: left = steps (wider), right = sidebar cards */
+    .walkthrough-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2.5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .walkthrough-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Numbered step list */
+    .walkthrough-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 1.25rem;
+      position: relative;
+    }
+
+    /* Vertical connector line between steps */
+    .step:not(:last-child) .step-line {
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: -1px;
+      width: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+
+    .step-number-bubble {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-number-bubble.done {
+      background: var(--good);
+      border-color: var(--good);
+      color: white;
+    }
+
+    .step-content {
+      padding: 0 0 2.5rem 0;
+    }
+
+    .step-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.25rem;
+      margin-top: 0.75rem;
+    }
+
+    .step-content h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-content p {
+      font-size: 0.88rem;
+      color: var(--soft);
+      line-height: 1.7;
+      margin-bottom: 0.85rem;
+    }
+
+    /* Screen preview inside step — taller ratio, lightbox-ready */
+    .screen-thumb {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .screen-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Sidebar sticky */
+    .walkthrough-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: sticky;
+      top: 80px;
+    }
+
+    /* ── REFLECTIONS ── */
+    #reflections { background: var(--surface); }
+
+    .reflection-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reflection-card::before {
+      content: '"';
+      position: absolute;
+      top: -0.5rem; left: 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 6rem;
+      color: #c5e2f5;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .reflection-text {
+      font-size: 0.88rem;
+      color: var(--soft);
+      line-height: 1.8;
+      font-style: italic;
+      position: relative;
+      padding-top: 1.5rem;
+    }
+
+    .reflection-author { margin-top: 1rem; font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    .reflection-author span { color: var(--muted); font-weight: 400; }
+
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer strong { color: var(--soft); }
+
+    #scrollTop {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--soft);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 500;
+    }
+
+    #scrollTop:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    #scrollTop.visible { display: flex; }
+
+    .accordion {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: var(--surface2);
+      border: none;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .accordion-header:hover { background: var(--border); }
+    .accordion-chevron { transition: transform 0.3s; font-size: 0.8rem; color: var(--muted); }
+    .accordion.open .accordion-chevron { transform: rotate(180deg); }
+
+    .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: var(--bg); }
+    .accordion.open .accordion-body { max-height: 2000px; }
+
+    .accordion-inner { padding: 1.25rem; font-size: 0.85rem; color: var(--soft); line-height: 1.8; }
+    .accordion-inner h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; color: var(--text); margin-bottom: 0.5rem; }
+    .accordion-inner p  { margin-bottom: 0.75rem; }
+    .accordion-inner ul { padding-left: 1.2rem; }
+    .accordion-inner li { margin-bottom: 0.3rem; }
+
+    .heuristic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .heuristic-chip {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem;
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .heuristic-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .heuristic-num  { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: #a8d4f0; line-height: 1; margin-bottom: 0.35rem; }
+    .heuristic-name { font-size: 0.78rem; font-weight: 600; color: var(--soft); line-height: 1.4; }
+
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .alt-bg { background: var(--surface) !important; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2rem; }
+      .members-grid { grid-template-columns: repeat(2, 1fr); }
+      .navbar { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <span class="logo">Group <span>1</span> · WonderPets <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 64 64" style="display:inline-block;vertical-align:middle;margin-left:4px;position:relative;top:-1px;" fill="#8B4513"><ellipse cx="12" cy="20" rx="6" ry="9"/><ellipse cx="26" cy="12" rx="6" ry="9"/><ellipse cx="40" cy="12" rx="6" ry="9"/><ellipse cx="54" cy="20" rx="6" ry="9"/><path d="M32 26c-10 0-20 6-18 18 1.5 8.5 8 14 18 14s16.5-5.5 18-14c2-12-8-18-18-18z"/></svg></span>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#data">Data Gathering</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#walkthrough">Walkthrough</a></li>
+        <li><a href="#reflections">Reflections</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-label">Navigation</div>
+    <ul>
+      <li><a href="#home"        class="mobile-nav-link"><span class="menu-icon">🏠</span> Home</a></li>
+      <li><a href="#data"        class="mobile-nav-link"><span class="menu-icon">📋</span> Data Gathering</a></li>
+      <li><a href="#results"     class="mobile-nav-link"><span class="menu-icon">📊</span> Results</a></li>
+      <li><a href="#walkthrough" class="mobile-nav-link"><span class="menu-icon">🖥️</span> Walkthrough</a></li>
+      <li><a href="#reflections" class="mobile-nav-link"><span class="menu-icon">💬</span> Reflections</a></li>
+    </ul>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-label">Project Info</div>
+    <ul>
+      <li><a href="#members" class="mobile-nav-link"><span class="menu-icon">👥</span> Group Members</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        HCI2 · Partido State University · 2026
+      </div>
+      <h1>
+        Usability Evaluation<br>
+        <span class="highlight">Web Reporting Site</span>
+      </h1>
+      <p class="subtitle">
+        A comprehensive documentation platform presenting the results of our<br>
+        heuristic evaluation and usability testing for our midterm prototype.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-blue">Heuristic Evaluation</span>
+        <span class="tag tag-purple">Usability Testing</span>
+        <span class="tag tag-cyan">Jakob Nielsen's 10 Heuristics</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- MEMBERS -->
+  <section id="members" class="fade-in">
+    <div class="container">
+      <p class="section-eyebrow">The Team</p>
+      <h2 class="section-title">Group Members</h2>
+      <p class="section-desc">Meet the students behind this usability evaluation project.</p>
+      <div class="members-grid">
+        <div class="member-card">
+          <img src="PSX_20260119_190307.jpg" alt="Rica Rose Vipinoso">
+          <div class="member-name">Rica Rose Vipinoso</div>
+          <div class="member-role">Team Leader</div>
+        </div>
+        <div class="member-card">
+          <img src="arayon.jpg" alt="Jerome Arayon">
+          <div class="member-name">Jerome Arayon</div>
+          <div class="member-role">Member</div>
+        </div>
+        <div class="member-card">
+          <img src="ellen.jpg" alt="Ellen Dela Cruz">
+          <div class="member-name">Ellen Dela Cruz</div>
+          <div class="member-role">Member</div>
+        </div>
+        <div class="member-card">
+          <img src="4.jpg" alt="John Kendric Pahuyo">
+          <div class="member-name">John Kendric Pahuyo</div>
+          <div class="member-role">Member</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DATA GATHERING -->
+  <section id="data" class="section fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Data Gathering</p>
+      <h2 class="section-title">Instruments & Documentation</h2>
+      <p class="section-desc">All consent forms, respondent profiles, survey instruments, and evidence gathered during testing.</p>
+
+      <!-- Consent Form -->
+      <div class="accordion" id="consentAccordion">
+        <button class="accordion-header" onclick="toggleAccordion('consentAccordion')">
+          <span>📋 &nbsp;Consent Form</span>
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner" style="text-align:center; padding: 2rem;">
+            <p style="color:var(--soft); margin-bottom:1.25rem;">View or download the full consent form document.</p>
+            <a href="Group1_Consent-Form .pdf" class="btn btn-primary" target="_blank">
+              📄 Open Consent Form (PDF)
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Respondent Profiles -->
+      <div class="accordion" id="respondentAccordion">
+        <button class="accordion-header" onclick="toggleAccordion('respondentAccordion')">
+          <span>👥 &nbsp;Respondent Profiles</span>
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <p>A total of <strong style="color:var(--text)">20 participants</strong> took part in the usability testing sessions.</p>
+            <div class="respondent-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Program / Year</th>
+                    <th>Usage Frequency</th>
+                    <th>Prior Experience</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>P1</td><td>mratole053.pbox@parsu.edu.ph</td><td>21</td><td>Female</td><td>BSEd-Filipino 3A</td><td>Weekly</td><td>Yes</td></tr>
+                  <tr><td>P2</td><td>lacamano070.pbox@parsu.edu.ph</td><td>21</td><td>Female</td><td>BSEd - Filipino 3A</td><td>Daily</td><td>No</td></tr>
+                  <tr><td>P3</td><td>vargasjonalyn14@gmail.com</td><td>29</td><td>Female</td><td>BSOA-3D</td><td>Daily</td><td>No</td></tr>
+                  <tr><td>P4</td><td>yongthunderrenm@gmail.com</td><td>20</td><td>Male</td><td>BSED-FIL.3A</td><td>Daily</td><td>No</td></tr>
+                  <tr><td>P5</td><td>mrvipinoso515.pbox@parsu.edu.ph</td><td>23</td><td>Female</td><td>BSED3A-FIL</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P6</td><td>cressidajanesville@gmail.com</td><td>21</td><td>Female</td><td>BSED-Filipino 3A</td><td>Never</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P7</td><td>kleisztstein@gmail.com</td><td>21</td><td>Female</td><td>BSED-FILIPINO 3A</td><td>Never</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P8</td><td>loporteza068.pbox@parsu.edu.ph</td><td>21</td><td>Male</td><td>BSED-Filipino 3A</td><td>Daily</td><td>Yes</td></tr>
+                  <tr class="respondent-hidden"><td>P9</td><td>johnalfredbelzapenero@gmail.com</td><td>18</td><td>Male</td><td>BSA 1A</td><td>Daily</td><td>Yes</td></tr>
+                  <tr class="respondent-hidden"><td>P10</td><td>enabante282.pbox@parsu.edu.ph</td><td>18</td><td>Female</td><td>BSA 1A</td><td>Daily</td><td>Yes</td></tr>
+                  <tr class="respondent-hidden"><td>P11</td><td>cbbelleza297.pbox@parsu.edu.ph</td><td>19</td><td>Female</td><td>BSA 1A</td><td>Daily</td><td>Yes</td></tr>
+                  <tr class="respondent-hidden"><td>P12</td><td>shereemaeolivares02@gmail.com</td><td>21</td><td>Female</td><td>BSED-FIL3A</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P13</td><td>nhelrosegrande9@gmail.com</td><td>21</td><td>Female</td><td>BSED-FIL 3A</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P14</td><td>jonalyntugay91@gmail.com</td><td>21</td><td>Female</td><td>BSMATH 3A</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P15</td><td>kimmm.jissoah@gmail.com</td><td>18</td><td>Female</td><td>BSEd ENG 1A</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P16</td><td>binside982@gmail.com</td><td>24</td><td>Male</td><td>BSOA3A</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P17</td><td>farayon750.pbox@parsu.edu.ph</td><td>23</td><td>Male</td><td>BSSE-2A</td><td>Daily</td><td>Yes</td></tr>
+                  <tr class="respondent-hidden"><td>P18</td><td>tvmirana343.pbox@parsu.edu.ph</td><td>21</td><td>Female</td><td>BSECON 3A</td><td>Daily</td><td>Yes</td></tr>
+                  <tr class="respondent-hidden"><td>P19</td><td>evrebuya349.pbox@parsu.edu.ph</td><td>22</td><td>Female</td><td>BSECON 3A</td><td>Daily</td><td>No</td></tr>
+                  <tr class="respondent-hidden"><td>P20</td><td>belzamarkanthony547@gmail.com</td><td>23</td><td>Male</td><td>BSOA2A</td><td>Daily</td><td>No</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="show-more-btn" id="respondentToggle" onclick="toggleRespondents()">
+              <span id="respondentArrow">▼</span>
+              <span id="respondentLabel">Show 15 more</span>
+              <span class="count-pill">20 total</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Survey Instruments -->
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:2rem 0 1rem;font-size:1.1rem;">Survey Instruments</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🔍 Heuristic Evaluation Workbook</h3>
+          <p>Each group member independently evaluated the prototype using Jakob Nielsen's 10 Usability Heuristics.</p>
+          <div style="margin-top:1rem;">
+            <div class="instrument-item">
+              <div class="instrument-icon icon-blue">📄</div>
+              <div><div class="instrument-label">Vipinoso — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
+              <a href="he-workbook-Vipinoso.pdf" class="instrument-link" target="_blank">View PDF</a>
+            </div>
+            <div class="instrument-item">
+              <div class="instrument-icon icon-purple">📄</div>
+              <div><div class="instrument-label">Arayon — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
+              <a href="he-workbook-Arayon.pdf" class="instrument-link" target="_blank">View PDF</a>
+            </div>
+            <div class="instrument-item">
+              <div class="instrument-icon icon-cyan">📄</div>
+              <div><div class="instrument-label">Dela Cruz — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
+              <a href="he-workbook-delacruz.pdf" class="instrument-link" target="_blank">View PDF</a>
+            </div>
+            <div class="instrument-item">
+              <div class="instrument-icon icon-green">📄</div>
+              <div><div class="instrument-label">Pahuyo — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
+              <a href="he-workbook-pahuyo.pdf" class="instrument-link" target="_blank">View PDF</a>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:1.25rem;">
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">02</div>
+            <h3 style="margin-bottom:0.85rem;">Usability Testing Survey</h3>
+            <p>The primary survey instrument used for this study was the standardized <strong style="color:var(--text);">System Usability Scale (SUS)</strong>, supplemented by a demographic profile and qualitative open-ended questions. This instrument was administered digitally using Google Forms to ensure efficient data collection and confidentiality.</p>
+          </div>
+          <div>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe9Sd_8IfXexPWmL0MPh-xOSyh7jBk7Nxp_4jD7Kl1loy6gJw/viewform?usp=header" target="_blank" class="btn btn-primary">
+              📄 View Survey Instrument
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TESTING DOCUMENTATION PHOTOS & VIDEOS — FIXED ── -->
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:2rem 0 0.35rem;font-size:1.1rem;">Testing Documentation Photos and Videos</h3>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem;">Photos and videos taken during the usability testing sessions.</p>
+
+      <!-- 3-column photo grid, uniform 4:3 boxes -->
+      <div class="gallery-grid">
+        <!-- Photo 1 — lightbox enabled -->
+        <div class="gallery-item">
+          <a class="lightbox-trigger" href="javascript:void(0)"
+             onclick="openLightbox('testing 1.png','Testing Session 1')"
+             aria-label="View Testing Session 1 full size">
+            <img src="testing 1.png" alt="Testing Session 1"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 1</span>'">
+            <span class="lb-icon" aria-hidden="true">⛶</span>
+          </a>
+        </div>
+        <!-- Photo 2 -->
+        <div class="gallery-item">
+          <a class="lightbox-trigger" href="javascript:void(0)"
+             onclick="openLightbox('frequency.png','Testing Session 2')"
+             aria-label="View Testing Session 2 full size">
+            <img src="frequency.png" alt="Testing Session 2"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 2</span>'">
+            <span class="lb-icon" aria-hidden="true">⛶</span>
+          </a>
+        </div>
+        <!-- Photo 3 -->
+        <div class="gallery-item">
+          <a class="lightbox-trigger" href="javascript:void(0)"
+             onclick="openLightbox('usability.png','Testing Session 3')"
+             aria-label="View Testing Session 3 full size">
+            <img src="usability.png" alt="Testing Session 3"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 3</span>'">
+            <span class="lb-icon" aria-hidden="true">⛶</span>
+          </a>
+        </div>
+        <!-- Photo 4 -->
+        <div class="gallery-item">
+          <a class="lightbox-trigger" href="javascript:void(0)"
+             onclick="openLightbox('testing.png','Testing Session 4')"
+             aria-label="View Testing Session 4 full size">
+            <img src="testing.png" alt="Testing Session 4"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 4</span>'">
+            <span class="lb-icon" aria-hidden="true">⛶</span>
+          </a>
+        </div>
+        <!-- Photo 5 -->
+        <div class="gallery-item">
+          <a class="lightbox-trigger" href="javascript:void(0)"
+             onclick="openLightbox('testing 2.png','Testing Session 5')"
+             aria-label="View Testing Session 5 full size">
+            <img src="testing 2.png" alt="Testing Session 5"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 5</span>'">
+            <span class="lb-icon" aria-hidden="true">⛶</span>
+          </a>
+        </div>
+        <!-- Placeholder slot 6 — keeps grid tidy on desktop -->
+        <div class="gallery-item" style="background: var(--surface2); border-style: dashed; cursor: default;">
+          <span class="placeholder-label" style="color:var(--muted);">More photos<br>coming soon</span>
+        </div>
+      </div>
+
+      <h4 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:1.75rem 0 0.5rem;font-size:0.95rem;">Session Videos</h4>
+      <div class="session-video-section">
+        <div class="session-video-wrapper">
+          <video controls>
+            <source src="gmeet video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- RESULTS -->
+  <section id="results" class="section alt-bg fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Results & Analysis</p>
+      <h2 class="section-title">Findings, Discussion & Recommendations</h2>
+      <p class="section-desc">Summary of usability testing outcomes, heuristic issues identified, and design improvement recommendations.</p>
+
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-number">20</div><div class="stat-label">Participants</div></div>
+        <div class="stat-box"><div class="stat-number">5</div><div class="stat-label">Tasks Tested</div></div>
+        <div class="stat-box"><div class="stat-number">78%</div><div class="stat-label">Avg Task Success</div></div>
+        <div class="stat-box"><div class="stat-number">3.8</div><div class="stat-label">Avg Satisfaction /5</div></div>
+        <div class="stat-box"><div class="stat-number">9</div><div class="stat-label">Issues Found</div></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:2rem;">
+        <div class="card">
+          <h3>Task Completion Rates</h3>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 1 — [Describe task]</span><span class="progress-val">100%</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 2 — [Describe task]</span><span class="progress-val">80%</span></div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 3 — [Describe task]</span><span class="progress-val">60%</span></div><div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 4 — [Describe task]</span><span class="progress-val">80%</span></div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 5 — [Describe task]</span><span class="progress-val">70%</span></div><div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div></div>
+        </div>
+        <div class="card">
+          <h3>Satisfaction Scores (avg per dimension)</h3>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Ease of Use</span><span class="progress-val">4.0/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Visual Design</span><span class="progress-val">3.6/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Navigation Clarity</span><span class="progress-val">3.4/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Error Recovery</span><span class="progress-val">3.2/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Overall Satisfaction</span><span class="progress-val">3.8/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:76%"></div></div></div>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:1rem;font-size:1.1rem;">Key Usability Issues Identified</h3>
+
+      <div class="finding-card">
+        <div class="finding-header" onclick="toggleFinding(this)">
+          <span class="severity-badge sev-high">High</span>
+          <span class="finding-title">[Issue Title — e.g., Missing error messages on form submission]</span>
+          <span class="finding-heuristic">H9 · Error Prevention</span>
+          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
+        </div>
+        <div class="finding-body">
+          <p><strong style="color:var(--text)">Description:</strong> Replace this with a specific description of the usability issue observed.</p>
+          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #9 — Help users recognize, diagnose, and recover from errors.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Replace this with a concrete design recommendation to fix the issue.</div>
+        </div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-header" onclick="toggleFinding(this)">
+          <span class="severity-badge sev-high">High</span>
+          <span class="finding-title">[Issue Title — e.g., Navigation labels are ambiguous]</span>
+          <span class="finding-heuristic">H6 · Recognition</span>
+          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
+        </div>
+        <div class="finding-body">
+          <p><strong style="color:var(--text)">Description:</strong> Describe the navigation issue here.</p>
+          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #6 — Recognition rather than recall.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Relabel navigation items, add icons, use breadcrumbs.</div>
+        </div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-header" onclick="toggleFinding(this)">
+          <span class="severity-badge sev-med">Medium</span>
+          <span class="finding-title">[Issue Title — e.g., No confirmation feedback after actions]</span>
+          <span class="finding-heuristic">H1 · Visibility</span>
+          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
+        </div>
+        <div class="finding-body">
+          <p><strong style="color:var(--text)">Description:</strong> Describe the feedback issue here.</p>
+          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #1 — Visibility of system status.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Add toast notifications, loading indicators, or success/error banners.</div>
+        </div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-header" onclick="toggleFinding(this)">
+          <span class="severity-badge sev-med">Medium</span>
+          <span class="finding-title">[Issue Title — e.g., Inconsistent button styles across screens]</span>
+          <span class="finding-heuristic">H4 · Consistency</span>
+          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
+        </div>
+        <div class="finding-body">
+          <p><strong style="color:var(--text)">Description:</strong> Describe the inconsistency issue here.</p>
+          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #4 — Consistency and standards.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Establish a design system for all interactive components.</div>
+        </div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-header" onclick="toggleFinding(this)">
+          <span class="severity-badge sev-low">Low</span>
+          <span class="finding-title">[Issue Title — e.g., Small tap targets on mobile view]</span>
+          <span class="finding-heuristic">H8 · Aesthetics</span>
+          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
+        </div>
+        <div class="finding-body">
+          <p><strong style="color:var(--text)">Description:</strong> Describe the tap-target or aesthetic issue here.</p>
+          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #8 — Aesthetic and minimalist design.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Increase minimum touch target sizes to at least 44×44px.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:2rem;">
+        <h3>Discussion of Findings</h3>
+        <p>Replace this paragraph with your group's discussion. Explain the overall pattern of usability issues, connect them to the heuristics evaluated, and reflect on how they affected users during testing.</p>
+        <p style="margin-top:0.75rem;">Discuss any surprising findings — issues that were not anticipated during design but emerged during actual user testing.</p>
+      </div>
+
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:2rem 0 0.5rem;font-size:1.1rem;">Nielsen's 10 Usability Heuristics — Reference</h3>
+      <div class="heuristic-grid">
+        <div class="heuristic-chip"><div class="heuristic-num">01</div><div class="heuristic-name">Visibility of System Status</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">02</div><div class="heuristic-name">Match Between System and Real World</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">03</div><div class="heuristic-name">User Control and Freedom</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">04</div><div class="heuristic-name">Consistency and Standards</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">05</div><div class="heuristic-name">Error Prevention</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">06</div><div class="heuristic-name">Recognition Rather Than Recall</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">07</div><div class="heuristic-name">Flexibility and Efficiency</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">08</div><div class="heuristic-name">Aesthetic and Minimalist Design</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">09</div><div class="heuristic-name">Help Users Recognize & Recover from Errors</div></div>
+        <div class="heuristic-chip"><div class="heuristic-num">10</div><div class="heuristic-name">Help and Documentation</div></div>
+      </div>
+
+      <div class="btn-row">
+        <a href="Heuristic-Evaluation-Workbook.pdf" class="btn btn-primary" target="_blank">📄 View Full Heuristic Evaluation Workbook (PDF)</a>
+        <a href="#data" class="btn btn-outline">← Back to Data Gathering</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── WALKTHROUGH — FIXED ── -->
+  <section id="walkthrough" class="section fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Optional · Prototype Walkthrough</p>
+      <h2 class="section-title">Walkthrough</h2>
+      <p class="section-desc">A guided overview of the prototype's key screens and user flows evaluated during testing.</p>
+
+      <div class="walkthrough-layout">
+
+        <!-- LEFT: numbered steps with screen previews -->
+        <div class="walkthrough-steps">
+
+          <!-- Step 01 -->
+          <div class="step">
+            <div class="step-line"></div>
+            <div class="step-number-bubble">01</div>
+            <div class="step-content">
+              <div class="step-label">Screen 01</div>
+              <h4>Landing Page</h4>
+              <p>This is the landing page or homepage of a veterinary appointment website called WonderPets. The design is clean, simple, and focused on helping pet owners quickly understand the services offered and book appointments online.</p>
+              <div class="screen-thumb">
+                <a class="lightbox-trigger" href="javascript:void(0)"
+                   onclick="openLightbox('landing page.png','Landing Page — WonderPets')"
+                   aria-label="View full-size landing page screenshot">
+                  <img src="landing page.png" alt="WonderPets Landing Page"
+                       onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Landing Page'">
+                  <span class="lb-icon" aria-hidden="true">⛶</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="step">
+            <div class="step-line"></div>
+            <div class="step-number-bubble">02</div>
+            <div class="step-content">
+              <div class="step-label">Screen 02</div>
+              <h4>Log In Page</h4>
+              <p>The Log In feature of the WonderPets system allows registered users to securely access their personal accounts and use the platform's veterinary services online.</p>
+              <div class="screen-thumb">
+                <img src="login.png" alt="Login Page"
+                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Log In Page'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="step">
+            <div class="step-line"></div>
+            <div class="step-number-bubble">03</div>
+            <div class="step-content">
+              <div class="step-label">Screen 03</div>
+              <h4>Dashboard</h4>
+              <p>The dashboard page displays key information, recent activities, appointment updates, notifications, and quick access to important pet management features within the WonderPets system.</p>
+              <div class="screen-thumb">
+                <img src="dashboard.png" alt="Dashboard"
+                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Dashboard'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="step">
+            <div class="step-line"></div>
+            <div class="step-number-bubble done">04</div>
+            <div class="step-content">
+              <div class="step-label">Screen 04</div>
+              <h4>Book an Appointment</h4>
+              <p>The appointment management page where users can view, schedule, and manage veterinary appointments for their pets quickly and conveniently.</p>
+              <div class="screen-thumb">
+                <img src="appointment.png" alt="Book an Appointment"
+                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Book an Appointment'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 05 -->
+          <div class="step">
+            <div class="step-line"></div>
+            <div class="step-number-bubble done">05</div>
+            <div class="step-content">
+              <div class="step-label">Screen 05</div>
+              <h4>Appointment Form</h4>
+              <p>This page allows users to provide complete owner and pet information required for scheduling a veterinary appointment. It includes fields for personal details, pet characteristics, and appointment-related information to ensure accurate and organized booking.</p>
+              <div class="screen-thumb">
+                <img src="form.png" alt="Appointment Form"
+                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Appointment Form'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 06 — last, no line -->
+          <div class="step">
+            <div class="step-number-bubble done">06</div>
+            <div class="step-content">
+              <div class="step-label">Screen 06</div>
+              <h4>Payment Method</h4>
+              <p>This page allows users to choose their preferred payment option for the appointment, including bank transfer, e-wallet, or pay during visit, providing a flexible and convenient payment process.</p>
+              <div class="screen-thumb">
+                <img src="payment method.png" alt="Payment Method"
+                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Payment Method'">
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end walkthrough-steps -->
+
+        <!-- RIGHT: sticky sidebar -->
+        <div class="walkthrough-sidebar">
+
+          <div class="card">
+            <h3>🎬 Video Demonstration</h3>
+            <p style="margin-bottom:0.75rem;">A screen recording demonstration of the prototype's complete user flow, narrated by the group.</p>
+            <video width="100%" controls style="border-radius:8px;display:block;">
+              <source src="demo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <div class="card">
+            <h3>🗺️ User Flow Summary</h3>
+            <p style="margin-bottom:1rem;">The prototype supports the following primary user flow tested during the evaluation sessions:</p>
+            <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">1</div><div><div class="instrument-label">User opens the system</div></div></div>
+            <div class="instrument-item"><div class="instrument-icon icon-purple" style="font-size:0.8rem;font-weight:700;color:#c4b5fd;">2</div><div><div class="instrument-label">Logs in to their account</div></div></div>
+            <div class="instrument-item"><div class="instrument-icon icon-cyan" style="font-size:0.8rem;font-weight:700;color:#67e8f9;">3</div><div><div class="instrument-label">Navigates to Book Appointment</div></div></div>
+            <div class="instrument-item"><div class="instrument-icon icon-green" style="font-size:0.8rem;font-weight:700;color:#6ee7b7;">4</div><div><div class="instrument-label">Fills out the appointment form</div></div></div>
+            <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">5</div><div><div class="instrument-label">Selects payment & confirms booking</div></div></div>
+          </div>
+
+        </div><!-- end walkthrough-sidebar -->
+
+      </div><!-- end walkthrough-layout -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- REFLECTIONS -->
+  <section id="reflections" class="section alt-bg fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Optional · Reflections</p>
+      <h2 class="section-title">Team Reflections</h2>
+      <p class="section-desc">Personal insights from each group member on the evaluation process, challenges, and learnings.</p>
+
+      <div class="grid-2">
+        <div class="reflection-card">
+          <div class="reflection-text">Replace this with your personal reflection on the project. What did you learn from conducting the heuristic evaluation? What was challenging?</div>
+          <div class="reflection-author">Rica Rose Vipinoso <span>· Team Leader</span></div>
+        </div>
+        <div class="reflection-card">
+          <div class="reflection-text">Replace this with your personal reflection. Focus on the usability testing experience — what surprised you about how real users interacted with the prototype?</div>
+          <div class="reflection-author">Jerome Arayon <span>· Member</span></div>
+        </div>
+        <div class="reflection-card">
+          <div class="reflection-text">Share your reflection on building the reporting site itself — how did structuring the information help you understand the evaluation findings more deeply?</div>
+          <div class="reflection-author">Ellen Dela Cruz <span>· Member</span></div>
+        </div>
+        <div class="reflection-card">
+          <div class="reflection-text">Reflect on the data analysis phase. How did you interpret the qualitative and quantitative findings? What patterns did you notice?</div>
+          <div class="reflection-author">John Kendric Pahuyo <span>· Member</span></div>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:3rem 0 1rem;font-size:1.1rem;">Additional Findings</h3>
+      <div class="grid-3">
+        <div class="card"><h3>💡 Positive Feedback</h3><p>Describe any positive aspects noted by participants during usability testing.</p></div>
+        <div class="card"><h3>🔄 Unexpected Patterns</h3><p>Describe any surprising behavior or feedback that emerged during testing.</p></div>
+        <div class="card"><h3>🚀 Future Improvements</h3><p>Describe longer-term design improvements for a future iteration.</p></div>
+      </div>
+
+      <div class="btn-row">
+        <a href="Heuristic-Evaluation-Workbook.pdf" class="btn btn-primary" target="_blank">📄 Download Full Report (PDF)</a>
+        <a href="#home" class="btn btn-outline">↑ Back to Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX OVERLAY -->
+  <div class="lb-overlay" id="lbOverlay" onclick="closeLightboxOutside(event)" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lb-close" onclick="closeLightbox()" aria-label="Close image preview">✕</button>
+    <img id="lbImg" src="" alt="Full-size preview">
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
+  <button id="scrollTop" title="Go to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <footer>
+    <p><strong>Partido State University</strong> · College of Engineering and Computational Sciences · Computational Sciences Department</p>
+    <p style="margin-top:0.35rem;">HCI2 – Human-Computer Interaction · Final Project: Web Reporting Site · Group 1</p>
+  </footer>
+
+  <script>
+    const scrollBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      scrollBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    function toggleAccordion(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    function toggleFinding(header) {
+      const body = header.nextElementSibling;
+      body.classList.toggle('open');
+      const chevron = header.querySelector('span:last-child');
+      chevron.textContent = body.classList.contains('open') ? '▲' : '▼';
+    }
+
+    function toggleRespondents() {
+      const rows   = document.querySelectorAll('.respondent-hidden');
+      const btn    = document.getElementById('respondentToggle');
+      const arrow  = document.getElementById('respondentArrow');
+      const label  = document.getElementById('respondentLabel');
+      const isOpen = btn.dataset.open === '1';
+      rows.forEach(r => r.style.display = isOpen ? 'none' : 'table-row');
+      btn.dataset.open   = isOpen ? '0' : '1';
+      arrow.textContent  = isOpen ? '▼' : '▲';
+      label.textContent  = isOpen ? 'Show 15 more' : 'Show less';
+    }
+
+    function openLightbox(src, caption) {
+      const overlay = document.getElementById('lbOverlay');
+      const img     = document.getElementById('lbImg');
+      const cap     = document.getElementById('lbCaption');
+      img.src       = src;
+      img.alt       = caption || 'Full-size preview';
+      cap.textContent = caption || '';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lbOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function closeLightboxOutside(e) {
+      if (e.target === document.getElementById('lbOverlay')) closeLightbox();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    const sections  = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id'); });
+      navLinks.forEach(a => {
+        a.style.color      = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+        a.style.background = a.getAttribute('href') === '#' + current ? 'var(--surface2)' : '';
+      });
+    });
+
+    const hamburger  = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.contains('open');
+      hamburger.classList.toggle('open', !isOpen);
+      hamburger.setAttribute('aria-expanded', !isOpen);
+      mobileMenu.setAttribute('aria-hidden', isOpen);
+      if (!isOpen) {
+        mobileMenu.style.display = 'block';
+        requestAnimationFrame(() => mobileMenu.classList.add('open'));
+      } else {
+        mobileMenu.classList.remove('open');
+        setTimeout(() => { mobileMenu.style.display = 'none'; }, 300);
+      }
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        setTimeout(() => { mobileMenu.style.display = 'none'; }, 300);
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        if (mobileMenu.classList.contains('open')) {
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          mobileMenu.classList.remove('open');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { mobileMenu.style.display = 'none'; }, 300);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
