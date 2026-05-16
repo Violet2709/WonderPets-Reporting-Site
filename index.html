@@ -1047,6 +1047,275 @@
       .members-grid { grid-template-columns: repeat(2, 1fr); }
       .navbar { padding: 0 1rem; }
     }
+
+
+
+    /* ─── SUS Results embed ─── */
+.sus-results-wrap { font-family: inherit; }
+
+/* Metric summary cards */
+.sus-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.sus-kpi {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+}
+.sus-kpi .kpi-num {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.sus-kpi .kpi-label {
+  font-size: 0.78rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+.sus-kpi.green  { border-top: 3px solid #1D9E75; }
+.sus-kpi.green  .kpi-num { color: #0F6E56; }
+.sus-kpi.purple { border-top: 3px solid #534AB7; }
+.sus-kpi.purple .kpi-num { color: #534AB7; }
+.sus-kpi.orange { border-top: 3px solid #D85A30; }
+.sus-kpi.orange .kpi-num { color: #D85A30; }
+.sus-kpi.amber  { border-top: 3px solid #BA7517; }
+.sus-kpi.amber  .kpi-num { color: #BA7517; }
+
+/* SUS Gauge + scale */
+.sus-gauge-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin: 2rem 0;
+}
+@media (max-width: 680px) { .sus-gauge-row { grid-template-columns: 1fr; } }
+
+.sus-gauge-block { text-align: center; }
+.sus-gauge-canvas { position: relative; display: inline-block; }
+#susGaugeEl { display: block; margin: 0 auto; }
+.sus-gauge-overlay {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+.sus-gauge-overlay .g-big { font-size: 2.4rem; font-weight: 700; color: #0F6E56; line-height: 1; }
+.sus-gauge-overlay .g-sub { font-size: 0.75rem; color: #6b7280; }
+.sus-grade-pill {
+  display: inline-block;
+  margin-top: 0.75rem;
+  background: #E1F5EE;
+  color: #085041;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 5px 18px;
+  border-radius: 20px;
+}
+
+.sus-scale-vis { margin-top: 1rem; }
+.sus-scale-track {
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(to right, #e74c3c 0%, #f39c12 35%, #1D9E75 60%, #085041 100%);
+  margin: 0.5rem 0 0.4rem;
+}
+.sus-scale-needle {
+  position: absolute;
+  top: -5px;
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  background: #111;
+  left: 72.625%;
+  transform: translateX(-50%);
+}
+.sus-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+.sus-scale-bands {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  margin-top: 6px;
+}
+.sus-scale-bands span { color: #6b7280; }
+
+.sus-interp-info h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.6rem; }
+.sus-interp-info p  { font-size: 0.88rem; color: #4b5563; line-height: 1.7; margin-bottom: 0.75rem; }
+.sus-interp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 1rem;
+}
+.sus-icard {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  color: #9ca3af;
+}
+.sus-icard.active-card {
+  background: #E1F5EE;
+  border-color: #1D9E75;
+  color: #085041;
+}
+.sus-icard .ic-grade { font-weight: 600; font-size: 0.88rem; margin-bottom: 2px; }
+
+/* Chart card */
+.sus-chart-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.sus-chart-card h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+.sus-chart-wrap { position: relative; }
+
+/* Question rows */
+.sus-q-tabs { display: flex; gap: 0; border-bottom: 1px solid #e5e7eb; margin: 1.5rem 0 1rem; }
+.sus-q-tab {
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.sus-q-tab.active { color: #0F6E56; border-bottom-color: #0F6E56; }
+.sus-q-panel { display: none; }
+.sus-q-panel.active { display: block; }
+.sus-q-list { display: grid; gap: 0.75rem; }
+.sus-q-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  flex-wrap: wrap;
+}
+.sus-q-num { font-size: 0.72rem; font-weight: 700; color: #9ca3af; min-width: 26px; }
+.sus-q-text { font-size: 0.83rem; color: #374151; flex: 1; min-width: 120px; line-height: 1.45; }
+.sus-q-type {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sus-q-type.pos { background: #E1F5EE; color: #085041; }
+.sus-q-type.neg { background: #FAECE7; color: #993C1D; }
+.sus-q-bar-wrap { width: 120px; height: 7px; border-radius: 4px; background: #f3f4f6; flex-shrink: 0; }
+.sus-q-bar { height: 100%; border-radius: 4px; }
+.sus-q-score { font-size: 0.88rem; font-weight: 600; min-width: 30px; text-align: right; }
+
+/* Demographics */
+.sus-demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
+.sus-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 0.75rem; color: #6b7280; }
+.sus-legend-dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 4px; }
+
+/* Score table */
+.sus-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+.sus-resp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.sus-resp-table th {
+  text-align: left;
+  padding: 9px 11px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+.sus-resp-table td { padding: 9px 11px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+.sus-resp-table tr:hover td { background: #f9fafb; }
+.sus-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+/* Quotes */
+.sus-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem; margin: 1.2rem 0; }
+.sus-quote-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.sus-quote-card::before {
+  content: '"';
+  position: absolute;
+  top: -12px; right: 14px;
+  font-size: 4.5rem;
+  color: #f3f4f6;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.sus-quote-card p { font-size: 0.85rem; color: #374151; line-height: 1.6; position: relative; }
+.sus-quote-card .qmeta { font-size: 0.72rem; color: #9ca3af; margin-top: 8px; font-weight: 500; }
+
+/* Suggest */
+.sus-suggest-list { display: grid; gap: 0.75rem; margin: 1.2rem 0; }
+.sus-suggest-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+.sus-suggest-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: #EEEDFE;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.sus-suggest-text { font-size: 0.85rem; color: #374151; line-height: 1.6; }
+
+/* Subsection labels */
+.sus-sub-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1D9E75;
+  margin: 2rem 0 0.75rem;
+}
   </style>
 </head>
 <body>
