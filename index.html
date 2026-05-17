@@ -216,7 +216,7 @@
         </div>
         <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:1.25rem;">
           <div>
-            <div style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">02</div>
+            <div style="font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;"></div>
             <h3 style="margin-bottom:0.85rem;">Usability Testing Survey</h3>
             <p>The primary survey instrument used for this study was the standardized <strong style="color:var(--text);">System Usability Scale (SUS)</strong>, supplemented by a demographic profile and qualitative open-ended questions. This instrument was administered digitally using Google Forms to ensure efficient data collection and confidentiality.</p>
           </div>
@@ -324,12 +324,31 @@
         </div>
       </div>
 
-      <div class="card" style="margin-top:2rem;">
-        <h3>Discussion of Findings</h3>
-        <p>Replace this paragraph with your group's discussion. Explain the overall pattern of usability issues, connect them to the heuristics evaluated, and reflect on how they affected users during testing.</p>
-        <p style="margin-top:0.75rem;">Discuss any surprising findings — issues that were not anticipated during design but emerged during actual user testing.</p>
-      </div>
+      <div class="card" style="padding:2.5rem 3rem; text-align:left; margin-top:2rem;">
 
+  <div style="text-align:center;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;">
+    Discussion of Findings
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2rem;">
+    <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+    <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+    <span style="display:block;height:2px;width:20px;background:var(--accent);border-radius:1px;"></span>
+    <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+    <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+  </div>
+
+  <p style="color:var(--soft);font-size:0.9rem;line-height:1.85;text-indent:2.5em;text-align:justify;margin-bottom:1.1rem;">The results of the usability evaluation show that the WonderPets prototype was generally well received by users, with most participants finding the system easy to use, easy to learn, and suitable for frequent use. Users also reported feeling confident while navigating the platform, which indicates that the interface provides enough clarity and guidance for the majority of respondents. In addition, the various functions of the system were perceived as well integrated, reflecting a coherent and consistent design that aligns with Nielsen's heuristic on consistency and standards. The prototype's visual design was frequently praised as clean, intuitive, and pleasing to the eyes — reinforcing that the aesthetic and minimalist design heuristic was effectively applied.</p>
+
+  <div id="dof-more" style="display:none;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.85;text-indent:2.5em;text-align:justify;margin-bottom:1.1rem;">However, some usability issues were still identified during testing, particularly in the areas of error prevention, help and documentation, and user control. Several respondents expressed uncertainty about whether they could navigate the system without technical support — a finding directly tied to the absence of tooltips, a help center, or a FAQ section. This gap was especially noticeable among respondents with no prior experience, who made up 65% of the total participant group. The appointment booking flow also presented friction: cancel and back buttons lacked sufficient visual weight, required fields were not clearly marked, and error messages were not descriptive enough to help users recover from mistakes.</p>
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.85;text-indent:2.5em;text-align:justify;margin-bottom:1.1rem;">A notable finding was the wide range of individual SUS scores — from a low of 47.5 to a perfect 100 — among a respondent group largely similar in age and academic background. The 52.5-point spread revealed that individual interaction style and prior cognitive models significantly influenced outcomes. Surprisingly, some of the highest scores came from respondents with no prior experience, suggesting the system's visual clarity was immediately comprehensible to certain user types.</p>
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.85;text-indent:2.5em;text-align:justify;margin-bottom:1.1rem;">Another unanticipated finding was the repeated mention of mobile responsiveness concerns — invisible during the design phase, as the prototype was primarily developed on desktop. Given that 85% of respondents reported daily mobile device use, this gap is significant. These findings collectively show that while the WonderPets prototype performs well in overall usability, improving form design consistency, strengthening error recovery, adding contextual help, and ensuring full mobile responsiveness will meaningfully enhance the next iteration.</p>
+  </div>
+  <div style="text-align:center;margin-top:0.75rem;">
+    <button onclick="(function(b){var m=document.getElementById('dof-more'),o=m.style.display==='block';m.style.display=o?'none':'block';b.textContent=o?'Read more ▾':'Read less ▴';})(this)" style="background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:0.8rem;padding:6px 16px;cursor:pointer;">Read more ▾</button>
+  </div>
+
+</div>
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:2rem 0 0.5rem;font-size:1.1rem;">Nielsen's 10 Usability Heuristics — Reference</h3>
       <div class="heuristic-grid">
         <div class="heuristic-chip"><div class="heuristic-num">01</div><div class="heuristic-name">Visibility of System Status</div></div>
@@ -345,7 +364,7 @@
       </div>
 
       <div class="btn-row">
-        <a href="Heuristic-Evaluation-Workbook.pdf" class="btn btn-primary" target="_blank">📄 View Full Heuristic Evaluation Workbook (PDF)</a>
+        <a href="WonderPets_Heuristic_Evaluation_Workbook.pdf" class="btn btn-primary" target="_blank">📄 View Full Heuristic Evaluation Workbook (PDF)</a>
         <a href="#data" class="btn btn-outline">← Back to Data Gathering</a>
       </div>
     </div>
@@ -353,123 +372,151 @@
 
   <div class="divider"></div>
 
-  <!-- WALKTHROUGH -->
-  <section id="walkthrough" class="section fade-in">
-    <div class="container">
-      <p class="section-eyebrow">Optional · Prototype Walkthrough</p>
-      <h2 class="section-title">Walkthrough</h2>
-      <p class="section-desc">A guided overview of the prototype's key screens and user flows evaluated during testing.</p>
+  
+  <div class="divider"></div>
 
-      <div class="walkthrough-layout">
-        <div class="walkthrough-steps">
+<!-- WALKTHROUGH -->
+<section id="walkthrough" class="section fade-in">
+  <div class="container">
+    <p class="section-eyebrow">Optional · Prototype Walkthrough</p>
+    <h2 class="section-title">Walkthrough</h2>
+    <p class="section-desc">A guided overview of the prototype's key screens and user flows evaluated during testing.</p>
 
-          <div class="step">
-            <div class="step-line"></div>
-            <div class="step-number-bubble">01</div>
-            <div class="step-content">
-              <div class="step-label">Screen 01</div>
-              <h4>Landing Page</h4>
-              <p>This is the landing page or homepage of a veterinary appointment website called WonderPets. The design is clean, simple, and focused on helping pet owners quickly understand the services offered and book appointments online.</p>
-              <div class="screen-thumb">
-                <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('landing page.png','Landing Page — WonderPets')" aria-label="View full-size landing page screenshot">
-                  <img src="landing page.png" alt="WonderPets Landing Page" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Landing Page'">
-                  <span class="lb-icon" aria-hidden="true">⛶</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-line"></div>
-            <div class="step-number-bubble">02</div>
-            <div class="step-content">
-              <div class="step-label">Screen 02</div>
-              <h4>Log In Page</h4>
-              <p>The Log In feature of the WonderPets system allows registered users to securely access their personal accounts and use the platform's veterinary services online.</p>
-              <div class="screen-thumb">
-                <img src="login.png" alt="Login Page" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Log In Page'">
-              </div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-line"></div>
-            <div class="step-number-bubble">03</div>
-            <div class="step-content">
-              <div class="step-label">Screen 03</div>
-              <h4>Dashboard</h4>
-              <p>The dashboard page displays key information, recent activities, appointment updates, notifications, and quick access to important pet management features within the WonderPets system.</p>
-              <div class="screen-thumb">
-                <img src="dashboard.png" alt="Dashboard" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Dashboard'">
-              </div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-line"></div>
-            <div class="step-number-bubble done">04</div>
-            <div class="step-content">
-              <div class="step-label">Screen 04</div>
-              <h4>Book an Appointment</h4>
-              <p>The appointment management page where users can view, schedule, and manage veterinary appointments for their pets quickly and conveniently.</p>
-              <div class="screen-thumb">
-                <img src="appointment.png" alt="Book an Appointment" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Book an Appointment'">
-              </div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-line"></div>
-            <div class="step-number-bubble done">05</div>
-            <div class="step-content">
-              <div class="step-label">Screen 05</div>
-              <h4>Appointment Form</h4>
-              <p>This page allows users to provide complete owner and pet information required for scheduling a veterinary appointment. It includes fields for personal details, pet characteristics, and appointment-related information to ensure accurate and organized booking.</p>
-              <div class="screen-thumb">
-                <img src="form.png" alt="Appointment Form" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Appointment Form'">
-              </div>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-number-bubble done">06</div>
-            <div class="step-content">
-              <div class="step-label">Screen 06</div>
-              <h4>Payment Method</h4>
-              <p>This page allows users to choose their preferred payment option for the appointment, including bank transfer, e-wallet, or pay during visit, providing a flexible and convenient payment process.</p>
-              <div class="screen-thumb">
-                <img src="payment method.png" alt="Payment Method" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Payment Method'">
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="walkthrough-sidebar">
-          <div class="card">
-            <h3>🎬 Video Demonstration</h3>
-            <p style="margin-bottom:0.75rem;">A screen recording demonstration of the prototype's complete user flow, narrated by the group.</p>
-            <video width="100%" controls style="border-radius:8px;display:block;">
-              <source src="demo.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-
-          <div class="card">
-            <h3>🗺️ User Flow Summary</h3>
-            <p style="margin-bottom:1rem;">The prototype supports the following primary user flow tested during the evaluation sessions:</p>
-            <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">1</div><div><div class="instrument-label">User opens the system</div></div></div>
-            <div class="instrument-item"><div class="instrument-icon icon-purple" style="font-size:0.8rem;font-weight:700;color:#c4b5fd;">2</div><div><div class="instrument-label">Logs in to their account</div></div></div>
-            <div class="instrument-item"><div class="instrument-icon icon-cyan" style="font-size:0.8rem;font-weight:700;color:#67e8f9;">3</div><div><div class="instrument-label">Navigates to Book Appointment</div></div></div>
-            <div class="instrument-item"><div class="instrument-icon icon-green" style="font-size:0.8rem;font-weight:700;color:#6ee7b7;">4</div><div><div class="instrument-label">Fills out the appointment form</div></div></div>
-            <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">5</div><div><div class="instrument-label">Selects payment & confirms booking</div></div></div>
-          </div>
-        </div>
+    <!-- ── PROTOTYPE VIEWING CARD ── -->
+    <div class="card" style="padding:2.5rem 3rem;text-align:left;margin-bottom:2rem;">
+      <div style="text-align:center;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;">
+        Prototype Walkthrough
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:2rem;">
+        <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+        <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+        <span style="display:block;height:2px;width:20px;background:var(--accent);border-radius:1px;"></span>
+        <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+        <span style="display:block;height:1px;width:32px;background:var(--border);"></span>
+      </div>
+      <p style="color:var(--soft);font-size:0.9rem;line-height:1.85;text-indent:2.5em;text-align:justify;margin-bottom:2rem;">
+        The Prototype Walkthrough presents the complete user journey of the WonderPets system, showing how users interact with the application from the landing screen up to the final booking confirmation. Each screen was designed to provide a simple, smooth, and user-friendly experience for pet owners. The user flow starts from the Landing Page, followed by the Log In page where users access their accounts. They proceed to the Dashboard, then navigate to the Appointment Booking page to enter their pet's details, and finally select a payment method to complete the booking.
+      </p>
+      <div style="text-align:center;">
+        <a href="https://www.figma.com/proto/aLv05MBl1gWFFkxdDwhnrt/WonderPets-online?node-id=1636-2934&p=f&t=Wt4Mq5QMRSXG4HKv-1&scaling=scale-down-width&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1636%3A2934" target="_blank" class="btn-dashboard-primary">
+          🖥️ View Full WonderPets Prototype
+        </a>
       </div>
     </div>
-  </section>
+    <!-- ── END PROTOTYPE VIEWING CARD ── -->
 
-  <div class="divider"></div>
+    <!-- ── STEPS + SIDEBAR ── -->
+    <div class="walkthrough-layout">
+      <div class="walkthrough-steps">
+
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-number-bubble">01</div>
+          <div class="step-content">
+            <div class="step-label">Screen 01</div>
+            <h4>Landing Page</h4>
+            <p>This is the landing page or homepage of a veterinary appointment website called WonderPets. The design is clean, simple, and focused on helping pet owners quickly understand the services offered and book appointments online.</p>
+            <div class="screen-thumb">
+              <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('landing page.png','Landing Page — WonderPets')" aria-label="View full-size landing page screenshot">
+                <img src="landing page.png" alt="WonderPets Landing Page" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Landing Page'">
+                <span class="lb-icon" aria-hidden="true">⛶</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-number-bubble">02</div>
+          <div class="step-content">
+            <div class="step-label">Screen 02</div>
+            <h4>Log In Page</h4>
+            <p>The Log In feature of the WonderPets system allows registered users to securely access their personal accounts and use the platform's veterinary services online.</p>
+            <div class="screen-thumb">
+              <img src="login.png" alt="Login Page" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Log In Page'">
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-number-bubble">03</div>
+          <div class="step-content">
+            <div class="step-label">Screen 03</div>
+            <h4>Dashboard</h4>
+            <p>The dashboard page displays key information, recent activities, appointment updates, notifications, and quick access to important pet management features within the WonderPets system.</p>
+            <div class="screen-thumb">
+              <img src="dashboard.png" alt="Dashboard" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Dashboard'">
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-number-bubble done">04</div>
+          <div class="step-content">
+            <div class="step-label">Screen 04</div>
+            <h4>Book an Appointment</h4>
+            <p>The appointment management page where users can view, schedule, and manage veterinary appointments for their pets quickly and conveniently.</p>
+            <div class="screen-thumb">
+              <img src="appointment.png" alt="Book an Appointment" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Book an Appointment'">
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-number-bubble done">05</div>
+          <div class="step-content">
+            <div class="step-label">Screen 05</div>
+            <h4>Appointment Form</h4>
+            <p>This page allows users to provide complete owner and pet information required for scheduling a veterinary appointment. It includes fields for personal details, pet characteristics, and appointment-related information to ensure accurate and organized booking.</p>
+            <div class="screen-thumb">
+              <img src="form.png" alt="Appointment Form" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Appointment Form'">
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number-bubble done">06</div>
+          <div class="step-content">
+            <div class="step-label">Screen 06</div>
+            <h4>Payment Method</h4>
+            <p>This page allows users to choose their preferred payment option for the appointment, including bank transfer, e-wallet, or pay during visit, providing a flexible and convenient payment process.</p>
+            <div class="screen-thumb">
+              <img src="payment method.png" alt="Payment Method" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Payment Method'">
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end walkthrough-steps -->
+
+      <div class="walkthrough-sidebar">
+        <div class="card">
+          <h3>🎬 Video Demonstration</h3>
+          <p style="margin-bottom:0.75rem;">A screen recording demonstration of the prototype's complete user flow, narrated by the group.</p>
+          <video width="100%" controls style="border-radius:8px;display:block;">
+            <source src="demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div class="card">
+          <h3>🗺️ User Flow Summary</h3>
+          <p style="margin-bottom:1rem;">The prototype supports the following primary user flow tested during the evaluation sessions:</p>
+          <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">1</div><div><div class="instrument-label">User opens the system</div></div></div>
+          <div class="instrument-item"><div class="instrument-icon icon-purple" style="font-size:0.8rem;font-weight:700;color:#c4b5fd;">2</div><div><div class="instrument-label">Logs in to their account</div></div></div>
+          <div class="instrument-item"><div class="instrument-icon icon-cyan" style="font-size:0.8rem;font-weight:700;color:#67e8f9;">3</div><div><div class="instrument-label">Navigates to Book Appointment</div></div></div>
+          <div class="instrument-item"><div class="instrument-icon icon-green" style="font-size:0.8rem;font-weight:700;color:#6ee7b7;">4</div><div><div class="instrument-label">Fills out the appointment form</div></div></div>
+          <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">5</div><div><div class="instrument-label">Selects payment & confirms booking</div></div></div>
+        </div>
+      </div><!-- end walkthrough-sidebar -->
+
+    </div><!-- end walkthrough-layout -->
+  </div><!-- end container -->
+</section>
+
+<div class="divider"></div>
 
   <!-- REFLECTIONS -->
   <section id="reflections" class="section alt-bg fade-in">
