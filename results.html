@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUS Results | WonderPets — Group 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+       DESIGN TOKENS — mirrors index.html / s.css palette
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #13161d;
+      --surface2:  #1a1e28;
+      --border:    #252a38;
+      --text:      #f0f2f8;
+      --muted:     #8b91a8;
+      --soft:      #6b7280;
+      --accent:    #6c8eff;
+      --accent2:   #a78bfa;
+      --cyan:      #22d3ee;
+      --green:     #34d399;
+      --orange:    #fb923c;
+      --red:       #f87171;
+      --nav-h:     64px;
+      --radius:    12px;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+
+      --sus-green:        #1D9E75;
+      --sus-green-dark:   #0F6E56;
+      --sus-green-deep:   #085041;
+      --sus-green-light:  rgba(29,158,117,0.15);
+      --sus-purple:       #534AB7;
+      --sus-purple-light: rgba(83,74,183,0.15);
+      --sus-orange:       #D85A30;
+      --sus-orange-light: rgba(216,90,48,0.15);
+      --sus-amber:        #BA7517;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--accent); color: #fff;
+      padding: 8px 16px; border-radius: 0 0 8px 8px;
+      font-size: .82rem; font-weight: 600;
+      z-index: 10000; transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      height: var(--nav-h);
+      background: rgba(13,15,20,.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-container {
+      max-width: 1140px; margin: 0 auto;
+      padding: 0 1.5rem; height: 100%;
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .logo {
+      font-family: var(--font-head);
+      font-weight: 800; font-size: 1rem;
+      color: var(--text); white-space: nowrap;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex; list-style: none;
+      gap: .15rem; margin-left: auto;
+    }
+    .nav-links a {
+      display: block; padding: 7px 13px;
+      font-size: .82rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      border-radius: 8px; transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); background: var(--surface2); }
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 13px;
+      font-size: .82rem; font-weight: 600;
+      color: var(--accent); text-decoration: none;
+      border-radius: 8px; border: 1px solid rgba(108,142,255,.3);
+      transition: background .2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-back:hover { background: rgba(108,142,255,.1); }
+
+    .hamburger {
+      display: none; background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 7px 9px;
+      cursor: pointer; color: var(--text);
+      margin-left: auto;
+      flex-direction: column; gap: 4px;
+    }
+    .hamburger span {
+      display: block; width: 20px; height: 2px;
+      background: currentColor; border-radius: 1px;
+      transition: transform .3s, opacity .2s;
+    }
+    .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem 1.25rem;
+      z-index: 999; box-shadow: 0 16px 40px rgba(0,0,0,.5);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu-label {
+      font-family: var(--font-head); font-size: .65rem;
+      font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: .5rem;
+    }
+    .mobile-menu ul { list-style: none; }
+    .mobile-nav-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; font-size: .88rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .mobile-nav-link:last-child { border-bottom: none; }
+    .mobile-nav-link:hover { color: var(--text); }
+    .menu-icon { font-size: 1rem; }
+    .mobile-menu-divider { height: 1px; background: var(--border); margin: 1rem 0 .75rem; }
+
+    @media (max-width: 700px) {
+      .hamburger { display: flex; }
+      .nav-links  { display: none; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 320px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; padding: 5rem 1.5rem 4rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,142,255,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 100%, rgba(167,139,250,.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: .18; pointer-events: none;
+    }
+    .hero-content { position: relative; text-align: center; max-width: 680px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid rgba(108,142,255,.3);
+      background: rgba(108,142,255,.08);
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 1.5rem;
+    }
+    .badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--sus-green);
+      box-shadow: 0 0 0 3px rgba(29,158,117,.3);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 3px rgba(29,158,117,.3); }
+      50%      { box-shadow: 0 0 0 6px rgba(29,158,117,.08); }
+    }
+    .hero-content h1 {
+      font-family: var(--font-head);
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      font-weight: 800; line-height: 1.12; margin-bottom: .75rem;
+    }
+    .highlight {
+      background: linear-gradient(135deg, var(--sus-green) 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle { font-size: .95rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+    .tag { font-size: .75rem; font-weight: 500; padding: 4px 12px; border-radius: 20px; }
+    .tag-green  { background: rgba(29,158,117,.15);  color: #6ee7b7; border: 1px solid rgba(29,158,117,.3); }
+    .tag-blue   { background: rgba(108,142,255,.12); color: #93c5fd; border: 1px solid rgba(108,142,255,.25); }
+    .tag-purple { background: rgba(167,139,250,.12); color: #c4b5fd; border: 1px solid rgba(167,139,250,.25); }
+
+    /* ── LAYOUT ── */
+    .divider { height: 1px; background: var(--border); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+    .section { padding: 4rem 0; }
+    .alt-bg  { background: var(--surface); }
+    section[id] { scroll-margin-top: calc(var(--nav-h) + 12px); }
+
+    .section-eyebrow {
+      font-family: var(--font-head); font-size: .72rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800; margin-bottom: .75rem;
+    }
+    .section-desc { color: var(--muted); font-size: .9rem; max-width: 600px; margin-bottom: 2rem; }
+
+    .sus-sub-label {
+      font-family: var(--font-head); font-size: .72rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--sus-green); margin: 2.5rem 0 1rem;
+    }
+
+    .card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+    }
+    .card h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: .6rem; }
+    .card p  { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+    .card-label {
+      font-family: var(--font-head); font-size: .68rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .85rem;
+    }
+
+    /* ── KPI ── */
+    .sus-kpi-row {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    @media(max-width:750px){ .sus-kpi-row{ grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:400px){ .sus-kpi-row{ grid-template-columns:1fr; } }
+
+    .sus-kpi {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem 1.1rem;
+      text-align: center; transition: transform .2s;
+    }
+    .sus-kpi:hover { transform: translateY(-2px); }
+    .sus-kpi .kpi-num { font-family: var(--font-head); font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .sus-kpi .kpi-label { font-size: .73rem; color: var(--muted); }
+    .sus-kpi.green  { border-top: 3px solid var(--sus-green);  } .sus-kpi.green  .kpi-num { color: #6ee7b7; }
+    .sus-kpi.purple { border-top: 3px solid var(--sus-purple); } .sus-kpi.purple .kpi-num { color: #c4b5fd; }
+    .sus-kpi.orange { border-top: 3px solid var(--sus-orange); } .sus-kpi.orange .kpi-num { color: var(--orange); }
+    .sus-kpi.amber  { border-top: 3px solid var(--sus-amber);  } .sus-kpi.amber  .kpi-num { color: #fcd34d; }
+
+    /* ── GAUGE ── */
+    .sus-gauge-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2.5rem; align-items: center;
+    }
+    @media(max-width:680px){ .sus-gauge-row{ grid-template-columns:1fr; } }
+    .sus-gauge-block { text-align: center; }
+    .sus-gauge-canvas { position: relative; display: inline-block; }
+    #susGaugeEl { display: block; margin: 0 auto; max-width: 100%; }
+    .sus-gauge-overlay {
+      position: absolute; bottom: 4px; left: 50%;
+      transform: translateX(-50%); text-align: center; pointer-events: none;
+    }
+    .sus-gauge-overlay .g-big { font-family: var(--font-head); font-size: 2.6rem; font-weight: 800; color: #6ee7b7; line-height: 1; }
+    .sus-gauge-overlay .g-sub { font-size: .73rem; color: var(--muted); }
+    .sus-grade-pill {
+      display: inline-block; margin-top: .75rem;
+      background: rgba(29,158,117,.18); color: #6ee7b7;
+      font-size: .82rem; font-weight: 600;
+      padding: 5px 18px; border-radius: 20px;
+      border: 1px solid rgba(29,158,117,.35);
+    }
+    .sus-scale-vis { margin-top: 1rem; }
+    .sus-scale-track {
+      position: relative; height: 12px; border-radius: 6px;
+      background: linear-gradient(to right,#e74c3c 0%,#f39c12 35%,#1D9E75 60%,#085041 100%);
+      margin: .5rem 0 .4rem;
+    }
+    .sus-scale-needle {
+      position: absolute; top: -5px; width: 3px; height: 22px;
+      border-radius: 2px; background: #fff; left: 72.625%;
+      transform: translateX(-50%); box-shadow: 0 0 6px rgba(255,255,255,.5);
+    }
+    .sus-scale-labels { display: flex; justify-content: space-between; font-size: .68rem; color: var(--muted); }
+    .sus-scale-bands  { display: flex; justify-content: space-between; font-size: .66rem; margin-top: 5px; }
+    .sus-scale-bands span { color: var(--soft); }
+    .sus-interp-info h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: .6rem; }
+    .sus-interp-info p  { font-size: .86rem; color: var(--muted); line-height: 1.7; margin-bottom: .75rem; }
+    .sus-interp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1rem; }
+    .sus-icard {
+      border-radius: 8px; padding: 10px 12px; font-size: .77rem;
+      border: 1px solid var(--border); background: var(--surface); color: var(--soft);
+    }
+    .sus-icard.active-card { background: rgba(29,158,117,.12); border-color: var(--sus-green); color: #6ee7b7; }
+    .sus-icard .ic-grade { font-weight: 700; font-size: .82rem; margin-bottom: 2px; }
+
+    /* ── CHART CARDS ── */
+    .sus-chart-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem 1.5rem; margin: 1.25rem 0;
+    }
+    .sus-chart-wrap { position: relative; }
+    .sus-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: .72rem; color: var(--muted); }
+    .sus-legend-dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+    /* ── Q TABS ── */
+    .sus-q-tabs {
+      display: flex; border-bottom: 1px solid var(--border);
+      margin: 1.5rem 0 1rem; overflow-x: auto;
+    }
+    .sus-q-tab {
+      padding: 9px 18px; font-family: var(--font-body); font-size: .82rem; font-weight: 500;
+      color: var(--muted); background: transparent; border: none; cursor: pointer;
+      border-bottom: 2px solid transparent; transition: all .2s; white-space: nowrap;
+    }
+    .sus-q-tab.active { color: var(--sus-green); border-bottom-color: var(--sus-green); }
+    .sus-q-panel { display: none; }
+    .sus-q-panel.active { display: block; }
+    .sus-q-list { display: grid; gap: .65rem; }
+    .sus-q-row {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: .85rem 1rem; flex-wrap: wrap;
+    }
+    .sus-q-num { font-size: .7rem; font-weight: 700; color: var(--muted); min-width: 26px; }
+    .sus-q-text { font-size: .82rem; color: var(--text); flex: 1; min-width: 120px; line-height: 1.45; }
+    .sus-q-type { font-size: .67rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+    .sus-q-type.pos { background: rgba(29,158,117,.15); color: #6ee7b7; }
+    .sus-q-type.neg { background: rgba(216,90,48,.15);  color: #fca5a5; }
+    .sus-q-bar-wrap { width: 100px; height: 6px; border-radius: 3px; background: var(--surface); flex-shrink: 0; }
+    @media(max-width:480px){ .sus-q-bar-wrap{ width:60px; } }
+    .sus-q-bar { height: 100%; border-radius: 3px; }
+    .sus-q-score { font-family: var(--font-head); font-size: .88rem; font-weight: 700; min-width: 30px; text-align: right; }
+
+    /* ── DEMO GRID ── */
+    .sus-demo-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1rem; margin: .5rem 0 1rem;
+    }
+    @media(max-width:680px){ .sus-demo-grid{ grid-template-columns:1fr 1fr; } }
+    @media(max-width:420px){ .sus-demo-grid{ grid-template-columns:1fr; } }
+    .sus-demo-grid .sus-chart-card { margin: 0; }
+
+    /* ── TABLE ── */
+    .sus-table-wrap { overflow-x: auto; margin: .5rem 0; border-radius: var(--radius); border: 1px solid var(--border); }
+    .sus-resp-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .sus-resp-table th {
+      text-align: left; padding: 10px 13px;
+      font-family: var(--font-head); font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .07em;
+      color: var(--muted); background: var(--surface);
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    .sus-resp-table td { padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text); }
+    .sus-resp-table tr:last-child td { border-bottom: none; }
+    .sus-resp-table tr:hover td { background: var(--surface2); }
+    .sus-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: .72rem; font-weight: 600; }
+
+    /* ── QUOTES ── */
+    .sus-quotes-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1rem; margin: .5rem 0 1rem; }
+    .sus-quote-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.1rem 1.25rem 1rem;
+      position: relative; overflow: hidden;
+    }
+    .sus-quote-card::before {
+      content: '"'; position: absolute; top: -12px; right: 14px;
+      font-size: 5rem; color: var(--border); font-family: Georgia,serif; line-height: 1;
+    }
+    .sus-quote-card p { font-size: .83rem; color: var(--text); line-height: 1.65; position: relative; }
+    .sus-quote-card .qmeta { font-size: .7rem; color: var(--muted); margin-top: 8px; font-weight: 500; }
+
+    /* ── SUGGESTIONS ── */
+    .sus-suggest-list { display: grid; gap: .75rem; margin: .5rem 0 1rem; }
+    .sus-suggest-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: .9rem 1.1rem;
+    }
+    .sus-suggest-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--sus-purple-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .sus-suggest-text { font-size: .84rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; border-radius: 8px; font-family: var(--font-body);
+      font-size: .85rem; font-weight: 500; text-decoration: none;
+      border: 1px solid transparent; transition: all .2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-outline { background: transparent; border-color: var(--border); color: var(--muted); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem 1.5rem;
+      font-size: .8rem; color: var(--muted); line-height: 1.7;
+    }
+
+    /* ── SCROLL TOP ── */
+    #scrollTop {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 42px; height: 42px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); border-radius: 50%;
+      font-size: 1.1rem; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,.4); z-index: 500;
+      transition: transform .2s;
+    }
+    #scrollTop:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+    #scrollTop.visible { display: flex; }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media print {
+      .navbar, #scrollTop { display: none !important; }
+      body { background: #fff; color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#index.html">Skip to main content</a>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <span class="logo">Group <span>1</span> · WonderPets
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 64 64"
+           style="display:inline-block;vertical-align:middle;margin-left:4px;position:relative;top:-1px;"
+           fill="#8B4513">
+        <ellipse cx="12" cy="20" rx="6" ry="9"/>
+        <ellipse cx="26" cy="12" rx="6" ry="9"/>
+        <ellipse cx="40" cy="12" rx="6" ry="9"/>
+        <ellipse cx="54" cy="20" rx="6" ry="9"/>
+        <path d="M32 26c-10 0-20 6-18 18 1.5 8.5 8 14 18 14s16.5-5.5 18-14c2-12-8-18-18-18z"/>
+      </svg>
+    </span>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#overview"     class="nav-link">Overview</a></li>
+      <li><a href="#gauge"        class="nav-link">SUS Score</a></li>
+      <li><a href="#questions"    class="nav-link">Questions</a></li>
+      <li><a href="#demographics" class="nav-link">Demographics</a></li>
+      <li><a href="#respondents"  class="nav-link">Respondents</a></li>
+      <li><a href="#feedback"     class="nav-link">Feedback</a></li>
+    </ul>
+
+    <a href="index.html" class="nav-back">← Back to Main</a>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-label">Navigation</div>
+  <ul>
+    <li><a href="#overview"     class="mobile-nav-link"><span class="menu-icon">📊</span> Overview</a></li>
+    <li><a href="#gauge"        class="mobile-nav-link"><span class="menu-icon">🎯</span> SUS Score</a></li>
+    <li><a href="#questions"    class="mobile-nav-link"><span class="menu-icon">📋</span> Questions</a></li>
+    <li><a href="#demographics" class="mobile-nav-link"><span class="menu-icon">👥</span> Demographics</a></li>
+    <li><a href="#respondents"  class="mobile-nav-link"><span class="menu-icon">📝</span> Respondents</a></li>
+    <li><a href="#feedback"     class="mobile-nav-link"><span class="menu-icon">💬</span> Feedback</a></li>
+  </ul>
+  <div class="mobile-menu-divider"></div>
+  <div class="mobile-menu-label">Site</div>
+  <ul>
+    <li><a href="index.html" class="mobile-nav-link"><span class="menu-icon">🏠</span> Back to Main Site</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      HCI2 · Results &amp; Analysis · 2026
+    </div>
+    <h1>
+      SUS Evaluation<br>
+      <span class="highlight">Results Report</span>
+    </h1>
+    <p class="subtitle">
+      System Usability Scale evaluation conducted on the WonderPets prototype —<br>
+      20 respondents across multiple courses, academic year 2024.
+    </p>
+    <div class="hero-tags">
+      <span class="tag tag-green">Avg Score 72.6 — Good</span>
+      <span class="tag tag-blue">20 Respondents</span>
+      <span class="tag tag-purple">SUS Methodology</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<main id="main-content">
+
+  <!-- Overview -->
+  <section id="overview" class="section fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Overview</p>
+      <h2 class="section-title">Key Metrics</h2>
+      <p class="section-desc">A snapshot of the SUS evaluation results across all 20 respondents.</p>
+
+      <div class="sus-kpi-row">
+        <div class="sus-kpi green">
+          <div class="kpi-num">72.6</div>
+          <div class="kpi-label">Avg SUS Score (out of 100)</div>
+        </div>
+        <div class="sus-kpi purple">
+          <div class="kpi-num">20</div>
+          <div class="kpi-label">Total Respondents</div>
+        </div>
+        <div class="sus-kpi orange">
+          <div class="kpi-num">100</div>
+          <div class="kpi-label">Highest SUS Score</div>
+        </div>
+        <div class="sus-kpi amber">
+          <div class="kpi-num">47.5</div>
+          <div class="kpi-label">Lowest SUS Score</div>
+        </div>
+      </div>
+
+      <div class="sus-chart-card">
+        <div class="card-label">SUS Score Distribution — All 20 Respondents</div>
+        <div class="sus-legend">
+          <span><span class="sus-legend-dot" style="background:#1D9E75"></span>68–100 Good / Excellent</span>
+          <span><span class="sus-legend-dot" style="background:#D85A30"></span>Below 68 Marginal / Poor</span>
+        </div>
+        <div class="sus-chart-wrap" style="height:220px;margin-top:.75rem">
+          <canvas id="susDistChart" role="img" aria-label="Bar chart of SUS scores for all 20 respondents"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SUS Score -->
+  <section id="gauge" class="section alt-bg fade-in">
+    <div class="container">
+      <p class="section-eyebrow">SUS Score</p>
+      <h2 class="section-title">Score &amp; Interpretation</h2>
+      <p class="section-desc">WonderPets achieved an average SUS score of 72.6, placing it in the "Good" usability category.</p>
+
+      <div class="card">
+        <div class="sus-gauge-row">
+          <div class="sus-gauge-block">
+            <div class="sus-gauge-canvas">
+              <canvas id="susGaugeEl" width="260" height="150" role="img" aria-label="Gauge: 72.6 out of 100 — Good"></canvas>
+              <div class="sus-gauge-overlay" aria-hidden="true">
+                <div class="g-big">72.6</div>
+                <div class="g-sub">out of 100</div>
+              </div>
+            </div>
+            <div><span class="sus-grade-pill">✓ Good Usability</span></div>
+            <div class="sus-scale-vis">
+              <div class="sus-scale-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+              <div class="sus-scale-track"><div class="sus-scale-needle"></div></div>
+              <div class="sus-scale-bands">
+                <span>Poor</span><span>Marginal</span><span>Good</span><span>Excellent</span>
+              </div>
+            </div>
+          </div>
+          <div class="sus-interp-info">
+            <h3>Interpretation</h3>
+            <p>With an average SUS score of <strong style="color:var(--text)">72.6</strong>, the WonderPets prototype falls in the <strong style="color:var(--text)">"Good"</strong> usability range. Scores above 68 are considered above average — WonderPets exceeds this benchmark.</p>
+            <p>This indicates most users found the system acceptable, easy to navigate, and would use it again — a strong result for a prototype-stage system.</p>
+            <div class="sus-interp-grid">
+              <div class="sus-icard"><div class="ic-grade">F — Poor</div><div>Below 51 · Not acceptable</div></div>
+              <div class="sus-icard"><div class="ic-grade">D — Marginal</div><div>51–68 · Needs work</div></div>
+              <div class="sus-icard active-card"><div class="ic-grade">✓ C — Good</div><div>68–80 · WonderPets: 72.6</div></div>
+              <div class="sus-icard"><div class="ic-grade">A — Excellent</div><div>Above 80 · Best imaginable</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Questions -->
+  <section id="questions" class="section fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Question Analysis</p>
+      <h2 class="section-title">SUS Questions</h2>
+      <p class="section-desc">Average scores for each of the 10 standardized SUS questions, split by positive and negative phrasing.</p>
+
+      <div role="tablist" aria-label="Filter SUS questions" class="sus-q-tabs">
+        <button class="sus-q-tab active" role="tab" aria-selected="true"  aria-controls="sus-tab-all" id="tab-all" onclick="susSwitchTab('all',this)">All Questions</button>
+        <button class="sus-q-tab"        role="tab" aria-selected="false" aria-controls="sus-tab-pos" id="tab-pos" onclick="susSwitchTab('pos',this)">Positive Only</button>
+        <button class="sus-q-tab"        role="tab" aria-selected="false" aria-controls="sus-tab-neg" id="tab-neg" onclick="susSwitchTab('neg',this)">Negative Only</button>
+      </div>
+      <div id="sus-tab-all" class="sus-q-panel active" role="tabpanel" aria-labelledby="tab-all"><div class="sus-q-list" id="susQAll"></div></div>
+      <div id="sus-tab-pos" class="sus-q-panel"        role="tabpanel" aria-labelledby="tab-pos" hidden><div class="sus-q-list" id="susQPos"></div></div>
+      <div id="sus-tab-neg" class="sus-q-panel"        role="tabpanel" aria-labelledby="tab-neg" hidden><div class="sus-q-list" id="susQNeg"></div></div>
+
+      <div class="sus-chart-card">
+        <div class="card-label">Question Scores Radar</div>
+        <div class="sus-chart-wrap" style="height:280px">
+          <canvas id="susRadarChart" role="img" aria-label="Radar chart: Q5 highest 4.60, Q8 lowest 2.25"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Demographics -->
+  <section id="demographics" class="section alt-bg fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Demographics</p>
+      <h2 class="section-title">Respondent Profile</h2>
+      <p class="section-desc">Breakdown of respondent characteristics including gender, prior experience, technology usage frequency, and age.</p>
+
+      <div class="sus-demo-grid">
+        <div class="sus-chart-card">
+          <div class="card-label">Gender</div>
+          <div class="sus-chart-wrap" style="height:150px">
+            <canvas id="susGenderChart" role="img" aria-label="Female 70%, Male 30%"></canvas>
+          </div>
+          <div class="sus-legend">
+            <span><span class="sus-legend-dot" style="background:#534AB7"></span>Female 70%</span>
+            <span><span class="sus-legend-dot" style="background:#9FE1CB"></span>Male 30%</span>
+          </div>
+        </div>
+        <div class="sus-chart-card">
+          <div class="card-label">Prior Experience</div>
+          <div class="sus-chart-wrap" style="height:150px">
+            <canvas id="susExpChart" role="img" aria-label="No experience 65%, Has experience 35%"></canvas>
+          </div>
+          <div class="sus-legend">
+            <span><span class="sus-legend-dot" style="background:#1D9E75"></span>No 65%</span>
+            <span><span class="sus-legend-dot" style="background:#D85A30"></span>Yes 35%</span>
+          </div>
+        </div>
+        <div class="sus-chart-card">
+          <div class="card-label">Tech Usage Frequency</div>
+          <div class="sus-chart-wrap" style="height:150px">
+            <canvas id="susFreqChart" role="img" aria-label="Daily 85%, Weekly 5%, Never 10%"></canvas>
+          </div>
+          <div class="sus-legend">
+            <span><span class="sus-legend-dot" style="background:#534AB7"></span>Daily 85%</span>
+            <span><span class="sus-legend-dot" style="background:#BA7517"></span>Weekly 5%</span>
+            <span><span class="sus-legend-dot" style="background:#888780"></span>Never 10%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sus-chart-card">
+        <div class="card-label">Age Distribution</div>
+        <div class="sus-chart-wrap" style="height:200px">
+          <canvas id="susAgeChart" role="img" aria-label="Bar chart of respondent ages, mostly 21"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Respondents -->
+  <section id="respondents" class="section fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Individual Scores</p>
+      <h2 class="section-title">Respondent Table</h2>
+      <p class="section-desc">All 20 respondents with their demographic details and individual SUS scores.</p>
+
+      <div class="sus-table-wrap">
+        <table class="sus-resp-table" aria-label="Individual respondent SUS scores">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Age</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Course</th>
+              <th scope="col">Experience</th>
+              <th scope="col">Tech Use</th>
+              <th scope="col">SUS Score</th>
+              <th scope="col">Grade</th>
+            </tr>
+          </thead>
+          <tbody id="susRespBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Feedback -->
+  <section id="feedback" class="section alt-bg fade-in">
+    <div class="container">
+      <p class="section-eyebrow">Feedback</p>
+      <h2 class="section-title">Respondent Feedback</h2>
+      <p class="section-desc">Qualitative responses gathered from respondents — what they liked and how they think the system could improve.</p>
+
+      <div class="sus-sub-label">What Respondents Liked</div>
+      <div class="sus-quotes-grid" id="susLikesGrid"></div>
+
+      <div class="sus-sub-label">Suggested Improvements</div>
+      <div class="sus-suggest-list" id="susSuggestList"></div>
+
+      <div class="btn-row">
+        <a href="index.html#results" class="btn btn-primary">← Back to Results</a>
+        <a href="index.html" class="btn btn-outline">🏠 Main Site</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Partido State University</strong> · College of Engineering and Computational Sciences · Computational Sciences Department</p>
+  <p style="margin-top:.35rem">HCI2 – Human-Computer Interaction · Final Project: Web Reporting Site · Group 1</p>
+</footer>
+
+<button id="scrollTop" title="Go to top" aria-label="Go to top"
+        onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function () {
+  /* hamburger */
+  var btn  = document.getElementById('hamburgerBtn');
+  var menu = document.getElementById('mobileMenu');
+  btn.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.setAttribute('aria-hidden',  open ? 'false' : 'true');
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach(function (a) {
+    a.addEventListener('click', function () {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      menu.setAttribute('aria-hidden','true');
+    });
+  });
+
+  /* active nav + scroll-top visibility */
+  var sections = document.querySelectorAll('section[id]');
+  var navAs    = document.querySelectorAll('.nav-link');
+  var scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY + 90;
+    sections.forEach(function (sec) {
+      if (y >= sec.offsetTop && y < sec.offsetTop + sec.offsetHeight) {
+        navAs.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + sec.id);
+        });
+      }
+    });
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
+
+  /* fade-in */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(function (el) { io.observe(el); });
+
+  /* data */
+  var QUESTIONS = [
+    {num:'Q1', text:'I would like to use this system frequently.',                             avg:4.55,type:'pos'},
+    {num:'Q2', text:'I found the system unnecessarily complex.',                               avg:2.95,type:'neg'},
+    {num:'Q3', text:'I thought the system was easy to use.',                                   avg:4.55,type:'pos'},
+    {num:'Q4', text:'I would need support of a technical person to use this system.',          avg:3.00,type:'neg'},
+    {num:'Q5', text:'The various functions in this system were well integrated.',              avg:4.60,type:'pos'},
+    {num:'Q6', text:'There was too much inconsistency in this system.',                        avg:2.40,type:'neg'},
+    {num:'Q7', text:'Most people would learn to use this system very quickly.',                avg:4.50,type:'pos'},
+    {num:'Q8', text:'I found the system very cumbersome to use.',                              avg:2.25,type:'neg'},
+    {num:'Q9', text:'I felt very confident using the system.',                                 avg:4.55,type:'pos'},
+    {num:'Q10',text:'I needed to learn a lot before I could get going with this system.',      avg:3.10,type:'neg'}
+  ];
+
+  var RESPONDENTS = [
+    {age:21,gender:'Female',course:'BSED-Filipino 3A',   exp:'Yes',freq:'Weekly',sus:47.5},
+    {age:21,gender:'Female',course:'BSED-Filipino 3A',   exp:'No', freq:'Daily', sus:100},
+    {age:29,gender:'Female',course:'BSOA-3D',            exp:'No', freq:'Daily', sus:47.5},
+    {age:20,gender:'Male',  course:'BSED-FIL.3A',        exp:'No', freq:'Daily', sus:97.5},
+    {age:23,gender:'Female',course:'BSED3A-FIL',         exp:'No', freq:'Daily', sus:75},
+    {age:21,gender:'Female',course:'BSED-Filipino 3A',   exp:'No', freq:'Never', sus:70},
+    {age:21,gender:'Female',course:'BSED-FILIPINO 3A',   exp:'No', freq:'Never', sus:80},
+    {age:21,gender:'Male',  course:'BSED-Filipino 3A',   exp:'Yes',freq:'Daily', sus:62.5},
+    {age:18,gender:'Male',  course:'BSA 1A',             exp:'Yes',freq:'Daily', sus:100},
+    {age:18,gender:'Female',course:'BSA 1A',             exp:'Yes',freq:'Daily', sus:100},
+    {age:18,gender:'Female',course:'BSA 1A',             exp:'Yes',freq:'Daily', sus:70},
+    {age:21,gender:'Female',course:'BSED-FIL3A',         exp:'No', freq:'Daily', sus:82.5},
+    {age:21,gender:'Female',course:'BSED-FIL 3A',        exp:'No', freq:'Daily', sus:67.5},
+    {age:21,gender:'Female',course:'BSMATH 3A',          exp:'No', freq:'Daily', sus:52.5},
+    {age:18,gender:'Female',course:'BSEd ENG 1A',        exp:'No', freq:'Daily', sus:52.5},
+    {age:24,gender:'Male',  course:'BSOA3A',             exp:'No', freq:'Daily', sus:75},
+    {age:23,gender:'Male',  course:'BSSE-2A',            exp:'Yes',freq:'Daily', sus:70},
+    {age:21,gender:'Female',course:'BSECON 3A',          exp:'Yes',freq:'Daily', sus:52.5},
+    {age:22,gender:'Female',course:'BSECON 3A',          exp:'No', freq:'Daily', sus:85},
+    {age:23,gender:'Male',  course:'BSOA2A',             exp:'No', freq:'Daily', sus:65}
+  ];
+  var SUS_SCORES = RESPONDENTS.map(function(r){return r.sus;});
+
+  var LIKES = [
+    'Easy to understand and use — will help fur parents take care of their pets.',
+    'Simple and convenient to use. Contents are easy to understand and buttons are easy to navigate.',
+    'Transactions for home visits and clinic services for pets are now fast and efficient.',
+    'Allows fur parents to check schedules digitally and contact the doctor without a physical clinic visit.',
+    'Eye-catching layout design. Easy to use, convenient and helpful for fur parents.',
+    'It is convenient to use and the features are well-organized.',
+    'The system is well integrated and clean, with icons and a color palette that is pleasing to the eyes.',
+    'Efficient and helpful for pet owners; the features are accurate for a veterinary system.'
+  ];
+
+  var SUGGESTIONS = [
+    {icon:'🛒',text:'Add an online pet store feature for food, vitamins, and other pet necessities.'},
+    {icon:'📱',text:'Ensure the system is fully accessible and responsive on mobile devices.'},
+    {icon:'📅',text:'Add appointment reminders via SMS or email, online payment options, and a digital health record for pets.'},
+    {icon:'🎨',text:'Consider a minimalist style with fewer navigation items, focused on core features like appointment booking.'},
+    {icon:'📋',text:'Provide recommendations for food, medication, or vitamins based on the most recent consultation.'}
+  ];
+
+  function gradeColor(s) {
+    if(s>=80) return {bg:'rgba(29,158,117,.18)',  color:'#6ee7b7', label:'Excellent'};
+    if(s>=68) return {bg:'rgba(108,142,255,.18)', color:'#93c5fd', label:'Good'};
+    if(s>=51) return {bg:'rgba(186,117,23,.18)',  color:'#fcd34d', label:'Marginal'};
+    return       {bg:'rgba(216,90,48,.18)',        color:'#fca5a5', label:'Poor'};
+  }
+
+  function buildQRows(elId, filter) {
+    var el = document.getElementById(elId); if(!el) return;
+    var items = filter==='all' ? QUESTIONS : QUESTIONS.filter(function(q){return q.type===filter;});
+    el.innerHTML = items.map(function(q){
+      var isPos=q.type==='pos';
+      var pct  = isPos ? (q.avg/5*100) : ((5-q.avg)/5*100);
+      var bar  = isPos ? '#1D9E75' : '#D85A30';
+      var col  = isPos ? '#6ee7b7' : '#fca5a5';
+      return '<div class="sus-q-row">'+
+        '<span class="sus-q-num">'+q.num+'</span>'+
+        '<span class="sus-q-text">'+q.text+'</span>'+
+        '<span class="sus-q-type '+q.type+'">'+(isPos?'Positive':'Negative')+'</span>'+
+        '<div class="sus-q-bar-wrap"><div class="sus-q-bar" style="width:'+pct.toFixed(1)+'%;background:'+bar+'"></div></div>'+
+        '<span class="sus-q-score" style="color:'+col+'">'+q.avg.toFixed(2)+'</span>'+
+        '</div>';
+    }).join('');
+  }
+  buildQRows('susQAll','all');
+  buildQRows('susQPos','pos');
+  buildQRows('susQNeg','neg');
+
+  window.susSwitchTab = function(tab, btn) {
+    document.querySelectorAll('.sus-q-tab').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false');});
+    document.querySelectorAll('.sus-q-panel').forEach(function(p){p.classList.remove('active');p.hidden=true;});
+    btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+    var p=document.getElementById('sus-tab-'+tab); p.classList.add('active'); p.hidden=false;
+  };
+
+  var tbody=document.getElementById('susRespBody');
+  if(tbody) tbody.innerHTML=RESPONDENTS.map(function(r,i){
+    var g=gradeColor(r.sus);
+    return '<tr>'+
+      '<td style="color:var(--muted);font-size:.78rem">'+(i+1)+'</td>'+
+      '<td>'+r.age+'</td><td>'+r.gender+'</td>'+
+      '<td style="font-size:.78rem">'+r.course+'</td>'+
+      '<td>'+r.exp+'</td><td>'+r.freq+'</td>'+
+      '<td style="font-family:var(--font-head);font-weight:700">'+r.sus+'</td>'+
+      '<td><span class="sus-badge" style="background:'+g.bg+';color:'+g.color+'">'+g.label+'</span></td>'+
+      '</tr>';
+  }).join('');
+
+  var likesGrid=document.getElementById('susLikesGrid');
+  if(likesGrid) likesGrid.innerHTML=LIKES.map(function(l,i){
+    return '<div class="sus-quote-card"><p>'+l+'</p><div class="qmeta">Respondent '+(i+1)+'</div></div>';
+  }).join('');
+
+  var suggestList=document.getElementById('susSuggestList');
+  if(suggestList) suggestList.innerHTML=SUGGESTIONS.map(function(s){
+    return '<div class="sus-suggest-item"><div class="sus-suggest-icon">'+s.icon+'</div><div class="sus-suggest-text">'+s.text+'</div></div>';
+  }).join('');
+
+  function initCharts() {
+    if(typeof Chart==='undefined'){setTimeout(initCharts,100);return;}
+    Chart.defaults.color='#8b91a8';
+    Chart.defaults.font.family="'DM Sans',sans-serif";
+
+    /* gauge */
+    var gc=document.getElementById('susGaugeEl');
+    if(gc){
+      var ctx=gc.getContext('2d'),cx=130,cy=138,r=105,score=72.625;
+      var end=Math.PI+(score/100)*Math.PI;
+      ctx.beginPath();ctx.arc(cx,cy,r,Math.PI,2*Math.PI);ctx.lineWidth=16;ctx.strokeStyle='rgba(255,255,255,.06)';ctx.stroke();
+      var gr=ctx.createLinearGradient(cx-r,cy,cx+r,cy);
+      gr.addColorStop(0,'#e74c3c');gr.addColorStop(.38,'#f39c12');gr.addColorStop(.65,'#1D9E75');gr.addColorStop(1,'#085041');
+      ctx.beginPath();ctx.arc(cx,cy,r,Math.PI,end);ctx.lineWidth=16;ctx.strokeStyle=gr;ctx.lineCap='round';ctx.stroke();
+      var px=cx+r*Math.cos(end),py=cy+r*Math.sin(end);
+      ctx.beginPath();ctx.arc(px,py,8,0,2*Math.PI);ctx.fillStyle='#6ee7b7';ctx.fill();
+    }
+
+    new Chart(document.getElementById('susDistChart'),{type:'bar',data:{labels:SUS_SCORES.map(function(_,i){return'R'+(i+1);}),datasets:[{label:'SUS Score',data:SUS_SCORES,backgroundColor:SUS_SCORES.map(function(s){return s>=68?'rgba(29,158,117,.75)':'rgba(216,90,48,.75)';}),borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:110,grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:function(v){return v<=100?v:null;}}},x:{grid:{display:false}}}}});
+
+    new Chart(document.getElementById('susRadarChart'),{type:'radar',data:{labels:QUESTIONS.map(function(q){return q.num;}),datasets:[{label:'Avg Score',data:QUESTIONS.map(function(q){return q.avg;}),backgroundColor:'rgba(29,158,117,.12)',borderColor:'#1D9E75',pointBackgroundColor:QUESTIONS.map(function(q){return q.type==='pos'?'#1D9E75':'#D85A30';}),pointBorderColor:'#0d0f14',pointRadius:5,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:1,max:5,ticks:{stepSize:1},grid:{color:'rgba(255,255,255,.08)'},pointLabels:{font:{size:11}}}}}});
+
+    new Chart(document.getElementById('susGenderChart'),{type:'doughnut',data:{labels:['Female','Male'],datasets:[{data:[14,6],backgroundColor:['#534AB7','#9FE1CB'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+    new Chart(document.getElementById('susExpChart'),{type:'doughnut',data:{labels:['No experience','Has experience'],datasets:[{data:[13,7],backgroundColor:['#1D9E75','#D85A30'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+    new Chart(document.getElementById('susFreqChart'),{type:'doughnut',data:{labels:['Daily','Weekly','Never'],datasets:[{data:[17,1,2],backgroundColor:['#534AB7','#BA7517','#888780'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+    new Chart(document.getElementById('susAgeChart'),{type:'bar',data:{labels:['18','19','20','21','22','23','24','29'],datasets:[{label:'Respondents',data:[3,1,1,9,1,3,1,1],backgroundColor:'rgba(83,74,183,.7)',borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:10,grid:{color:'rgba(255,255,255,.05)'},ticks:{stepSize:2}},x:{grid:{display:false}}}}});
+  }
+
+  document.readyState==='loading'
+    ? document.addEventListener('DOMContentLoaded',initCharts)
+    : initCharts();
+})();
+</script>
+</body>
+</html>
