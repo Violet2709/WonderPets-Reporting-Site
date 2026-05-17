@@ -290,69 +290,33 @@
 
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:1rem;font-size:1.1rem;">Key Usability Issues Identified</h3>
 
-      <div class="finding-card">
-        <div class="finding-header" onclick="toggleFinding(this)">
-          <span class="severity-badge sev-high">High</span>
-          <span class="finding-title">[Issue Title — e.g., Missing error messages on form submission]</span>
-          <span class="finding-heuristic">H9 · Error Prevention</span>
-          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
-        </div>
-        <div class="finding-body">
-          <p><strong style="color:var(--text)">Description:</strong> Replace this with a specific description of the usability issue observed.</p>
-          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #9 — Help users recognize, diagnose, and recover from errors.</p>
-          <div class="rec-box"><strong>Recommendation:</strong> Replace this with a concrete design recommendation to fix the issue.</div>
-        </div>
-      </div>
+<div style="display:flex;flex-direction:column;gap:1rem;">
 
-      <div class="finding-card">
-        <div class="finding-header" onclick="toggleFinding(this)">
-          <span class="severity-badge sev-high">High</span>
-          <span class="finding-title">[Issue Title — e.g., Navigation labels are ambiguous]</span>
-          <span class="finding-heuristic">H6 · Recognition</span>
-          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
-        </div>
-        <div class="finding-body">
-          <p><strong style="color:var(--text)">Description:</strong> Describe the navigation issue here.</p>
-          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #6 — Recognition rather than recall.</p>
-          <div class="rec-box"><strong>Recommendation:</strong> Relabel navigation items, add icons, use breadcrumbs.</div>
-        </div>
-      </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:1.1rem 1.5rem;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.7;">Cancel, back, and edit buttons are not clearly visible or emphasized during the appointment scheduling flow, making it difficult for users to exit or correct mistakes.</p>
+  </div>
 
-      <div class="finding-card">
-        <div class="finding-header" onclick="toggleFinding(this)">
-          <span class="severity-badge sev-med">Medium</span>
-          <span class="finding-title">[Issue Title — e.g., No confirmation feedback after actions]</span>
-          <span class="finding-heuristic">H1 · Visibility</span>
-          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
-        </div>
-        <div class="finding-body">
-          <p><strong style="color:var(--text)">Description:</strong> Describe the feedback issue here.</p>
-          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #1 — Visibility of system status.</p>
-          <div class="rec-box"><strong>Recommendation:</strong> Add toast notifications, loading indicators, or success/error banners.</div>
-        </div>
-      </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:1.1rem 1.5rem;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.7;">Required fields in the appointment form are not marked, and there is no real-time validation to prevent users from submitting incomplete information.</p>
+  </div>
 
-      <div class="finding-card">
-        <div class="finding-header" onclick="toggleFinding(this)">
-          <span class="severity-badge sev-med">Medium</span>
-          <span class="finding-title">[Issue Title — e.g., Inconsistent button styles across screens]</span>
-          <span class="finding-heuristic">H4 · Consistency</span>
-          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
-        </div>
-        <div class="finding-body">
-          <p><strong style="color:var(--text)">Description:</strong> Describe the inconsistency issue here.</p>
-          <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #4 — Consistency and standards.</p>
-          <div class="rec-box"><strong>Recommendation:</strong> Establish a design system for all interactive components.</div>
-        </div>
-      </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:1.1rem 1.5rem;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.7;">Error messages are not visible or descriptive enough for users to understand what went wrong or how to recover from mistakes.</p>
+  </div>
 
-      <div class="finding-card">
-        <div class="finding-header" onclick="toggleFinding(this)">
-          <span class="severity-badge sev-low">Low</span>
-          <span class="finding-title">[Issue Title — e.g., Small tap targets on mobile view]</span>
-          <span class="finding-heuristic">H8 · Aesthetics</span>
-          <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
-        </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:1.1rem 1.5rem;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.7;">Button sizes, colors, spacing, and layout elements vary inconsistently between pages, which may confuse users about whether similar elements serve the same function.</p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:1.1rem 1.5rem;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.7;">Cancel and back buttons lack sufficient visual weight and are not easy to locate, making them easy to overlook during the booking process.</p>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:1.1rem 1.5rem;">
+    <p style="color:var(--soft);font-size:0.9rem;line-height:1.7;">No help center, FAQ section, tooltips, or user guide is available, leaving first-time users without any in-context assistance to navigate the system.</p>
+  </div>
+
+</div>
         <div class="finding-body">
           <p><strong style="color:var(--text)">Description:</strong> Describe the tap-target or aesthetic issue here.</p>
           <p><strong style="color:var(--text)">Heuristic Violated:</strong> Nielsen Heuristic #8 — Aesthetic and minimalist design.</p>
