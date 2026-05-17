@@ -6,9 +6,67 @@
   <title>HCI Final Project | Web Reporting Site</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
-  <link rel="stylesheet" href="s.css"> 
-  
+  <link rel="stylesheet" href="s.css">
 
+  <style>
+    /* ── REFLECTION CARDS — uniform size fix ── */
+    .reflections-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      align-items: stretch;          /* all rows same height */
+    }
+    @media (max-width: 680px) {
+      .reflections-grid { grid-template-columns: 1fr; }
+    }
+
+    .reflection-card {
+      background: var(--surface2, #1a1e28);
+      border: 1px solid var(--border, #252a38);
+      border-radius: var(--radius, 12px);
+      padding: 1.4rem 1.5rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;             /* baseline height so short cards don't collapse */
+    }
+
+    .reflection-body {
+      flex: 1;
+      overflow-y: auto;              /* long text scrolls inside instead of stretching */
+      max-height: 200px;
+      font-size: .86rem;
+      color: var(--muted, #8b91a8);
+      line-height: 1.72;
+      padding-right: 4px;
+      margin-bottom: 1rem;
+      /* thin scrollbar */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border, #252a38) transparent;
+    }
+    .reflection-body::-webkit-scrollbar { width: 4px; }
+    .reflection-body::-webkit-scrollbar-thumb { background: var(--border, #252a38); border-radius: 2px; }
+
+    .reflection-author {
+      font-family: var(--font-head, 'Syne', sans-serif);
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--text, #f0f2f8);
+      padding-top: .75rem;
+      border-top: 1px solid var(--border, #252a38);
+      margin-top: auto;
+    }
+    .reflection-author span {
+      font-weight: 400;
+      color: var(--muted, #8b91a8);
+    }
+
+    /* accent bar on left */
+    .reflection-card { border-left: 3px solid var(--accent, #6c8eff); }
+    .reflection-card:nth-child(2) { border-left-color: var(--accent2, #a78bfa); }
+    .reflection-card:nth-child(3) { border-left-color: var(--cyan, #22d3ee); }
+    .reflection-card:nth-child(4) { border-left-color: var(--green, #34d399); }
+  </style>
 </head>
 <body>
 
@@ -26,9 +84,7 @@
       </ul>
 
       <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
@@ -100,7 +156,7 @@
           <div class="member-role">Member</div>
         </div>
         <div class="member-card">
-          <img src="4.jpg" alt="John Kendric Pahuyo">
+          <img src="pahoyo.jpg" alt="John Kendric Pahuyo">
           <div class="member-name">John Kendric Pahuyo</div>
           <div class="member-role">Member</div>
         </div>
@@ -117,7 +173,6 @@
       <h2 class="section-title">Instruments & Documentation</h2>
       <p class="section-desc">All consent forms, respondent profiles, survey instruments, and evidence gathered during testing.</p>
 
-      <!-- Consent Form -->
       <div class="accordion" id="consentAccordion">
         <button class="accordion-header" onclick="toggleAccordion('consentAccordion')">
           <span>📋 &nbsp;Consent Form</span>
@@ -126,15 +181,11 @@
         <div class="accordion-body">
           <div class="accordion-inner" style="text-align:center; padding: 2rem;">
             <p style="color:var(--soft); margin-bottom:1.25rem;">View or download the full consent form document.</p>
-            <a href="Group1_Consent-Form .pdf" class="btn btn-primary" target="_blank">
-              📄 Open Consent Form (PDF)
-            </a>
+            <a href="Group1_Consent-Form .pdf" class="btn btn-primary" target="_blank">📄 Open Consent Form (PDF)</a>
           </div>
         </div>
       </div>
 
-     
-      <!-- Survey Instruments -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:2rem 0 1rem;font-size:1.1rem;">Survey Instruments</h3>
       <div class="grid-2">
         <div class="card">
@@ -154,7 +205,7 @@
             <div class="instrument-item">
               <div class="instrument-icon icon-cyan">📄</div>
               <div><div class="instrument-label">Dela Cruz — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
-              <a href="he-workbook-delacruz.pdf" class="instrument-link" target="_blank">View PDF</a>
+              <a href="De-la-Cruz_Heuristic_Evaluation_Workbook.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
             <div class="instrument-item">
               <div class="instrument-icon icon-green">📄</div>
@@ -170,72 +221,44 @@
             <p>The primary survey instrument used for this study was the standardized <strong style="color:var(--text);">System Usability Scale (SUS)</strong>, supplemented by a demographic profile and qualitative open-ended questions. This instrument was administered digitally using Google Forms to ensure efficient data collection and confidentiality.</p>
           </div>
           <div>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe9Sd_8IfXexPWmL0MPh-xOSyh7jBk7Nxp_4jD7Kl1loy6gJw/viewform?usp=header" target="_blank" class="btn btn-primary">
-              📄 View Survey Instrument
-            </a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe9Sd_8IfXexPWmL0MPh-xOSyh7jBk7Nxp_4jD7Kl1loy6gJw/viewform?usp=header" target="_blank" class="btn btn-primary">📄 View Survey Instrument</a>
           </div>
         </div>
       </div>
 
-      <!-- ── TESTING DOCUMENTATION PHOTOS & VIDEOS — FIXED ── -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:2rem 0 0.35rem;font-size:1.1rem;">Testing Documentation Photos and Videos</h3>
       <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem;">Photos and videos taken during the usability testing sessions.</p>
 
-      <!-- 3-column photo grid, uniform 4:3 boxes -->
       <div class="gallery-grid">
-        <!-- Photo 1 — lightbox enabled -->
         <div class="gallery-item">
-          <a class="lightbox-trigger" href="javascript:void(0)"
-             onclick="openLightbox('testing 1.png','Testing Session 1')"
-             aria-label="View Testing Session 1 full size">
-            <img src="testing 1.png" alt="Testing Session 1"
-                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 1</span>'">
+          <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('testing 1.png','Testing Session 1')" aria-label="View Testing Session 1 full size">
+            <img src="testing 1.png" alt="Testing Session 1" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 1</span>'">
             <span class="lb-icon" aria-hidden="true">⛶</span>
           </a>
         </div>
-        <!-- Photo 2 -->
         <div class="gallery-item">
-          <a class="lightbox-trigger" href="javascript:void(0)"
-             onclick="openLightbox('frequency.png','Testing Session 2')"
-             aria-label="View Testing Session 2 full size">
-            <img src="frequency.png" alt="Testing Session 2"
-                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 2</span>'">
+          <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('frequency.png','Testing Session 2')" aria-label="View Testing Session 2 full size">
+            <img src="frequency.png" alt="Testing Session 2" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 2</span>'">
             <span class="lb-icon" aria-hidden="true">⛶</span>
           </a>
         </div>
-        <!-- Photo 3 -->
         <div class="gallery-item">
-          <a class="lightbox-trigger" href="javascript:void(0)"
-             onclick="openLightbox('usability.png','Testing Session 3')"
-             aria-label="View Testing Session 3 full size">
-            <img src="usability.png" alt="Testing Session 3"
-                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 3</span>'">
+          <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('usability.png','Testing Session 3')" aria-label="View Testing Session 3 full size">
+            <img src="usability.png" alt="Testing Session 3" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 3</span>'">
             <span class="lb-icon" aria-hidden="true">⛶</span>
           </a>
         </div>
-        <!-- Photo 4 -->
         <div class="gallery-item">
-          <a class="lightbox-trigger" href="javascript:void(0)"
-             onclick="openLightbox('testing.png','Testing Session 4')"
-             aria-label="View Testing Session 4 full size">
-            <img src="testing.png" alt="Testing Session 4"
-                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 4</span>'">
+          <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('testing.png','Testing Session 4')" aria-label="View Testing Session 4 full size">
+            <img src="testing.png" alt="Testing Session 4" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 4</span>'">
             <span class="lb-icon" aria-hidden="true">⛶</span>
           </a>
         </div>
-        <!-- Photo 5 -->
         <div class="gallery-item">
-          <a class="lightbox-trigger" href="javascript:void(0)"
-             onclick="openLightbox('testing 2.png','Testing Session 5')"
-             aria-label="View Testing Session 5 full size">
-            <img src="testing 2.png" alt="Testing Session 5"
-                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 5</span>'">
+          <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('testing 2.png','Testing Session 5')" aria-label="View Testing Session 5 full size">
+            <img src="testing 2.png" alt="Testing Session 5" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'placeholder-label\'>📸 Testing Session 5</span>'">
             <span class="lb-icon" aria-hidden="true">⛶</span>
           </a>
-        </div>
-        <!-- Placeholder slot 6 — keeps grid tidy on desktop -->
-        <div class="gallery-item" style="background: var(--surface2); border-style: dashed; cursor: default;">
-          <span class="placeholder-label" style="color:var(--muted);">More photos<br>coming soon</span>
         </div>
       </div>
 
@@ -260,9 +283,7 @@
       <h2 class="section-title">Findings, Discussion & Recommendations</h2>
       <p class="section-desc">Summary of usability testing outcomes, heuristic issues identified, and design improvement recommendations.</p>
 
-   <a href="results.html" class="btn-dashboard-primary">
-  📊 View Interactive Visual Results 
-</a>
+      <a href="results.html" class="btn-dashboard-primary">📊 View Interactive Visual Results</a>
 
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:1rem;font-size:1.1rem;">Key Usability Issues Identified</h3>
 
@@ -365,7 +386,7 @@
 
   <div class="divider"></div>
 
-  <!-- ── WALKTHROUGH — FIXED ── -->
+  <!-- WALKTHROUGH -->
   <section id="walkthrough" class="section fade-in">
     <div class="container">
       <p class="section-eyebrow">Optional · Prototype Walkthrough</p>
@@ -373,11 +394,8 @@
       <p class="section-desc">A guided overview of the prototype's key screens and user flows evaluated during testing.</p>
 
       <div class="walkthrough-layout">
-
-        <!-- LEFT: numbered steps with screen previews -->
         <div class="walkthrough-steps">
 
-          <!-- Step 01 -->
           <div class="step">
             <div class="step-line"></div>
             <div class="step-number-bubble">01</div>
@@ -386,18 +404,14 @@
               <h4>Landing Page</h4>
               <p>This is the landing page or homepage of a veterinary appointment website called WonderPets. The design is clean, simple, and focused on helping pet owners quickly understand the services offered and book appointments online.</p>
               <div class="screen-thumb">
-                <a class="lightbox-trigger" href="javascript:void(0)"
-                   onclick="openLightbox('landing page.png','Landing Page — WonderPets')"
-                   aria-label="View full-size landing page screenshot">
-                  <img src="landing page.png" alt="WonderPets Landing Page"
-                       onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Landing Page'">
+                <a class="lightbox-trigger" href="javascript:void(0)" onclick="openLightbox('landing page.png','Landing Page — WonderPets')" aria-label="View full-size landing page screenshot">
+                  <img src="landing page.png" alt="WonderPets Landing Page" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Landing Page'">
                   <span class="lb-icon" aria-hidden="true">⛶</span>
                 </a>
               </div>
             </div>
           </div>
 
-          <!-- Step 02 -->
           <div class="step">
             <div class="step-line"></div>
             <div class="step-number-bubble">02</div>
@@ -406,13 +420,11 @@
               <h4>Log In Page</h4>
               <p>The Log In feature of the WonderPets system allows registered users to securely access their personal accounts and use the platform's veterinary services online.</p>
               <div class="screen-thumb">
-                <img src="login.png" alt="Login Page"
-                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Log In Page'">
+                <img src="login.png" alt="Login Page" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Log In Page'">
               </div>
             </div>
           </div>
 
-          <!-- Step 03 -->
           <div class="step">
             <div class="step-line"></div>
             <div class="step-number-bubble">03</div>
@@ -421,13 +433,11 @@
               <h4>Dashboard</h4>
               <p>The dashboard page displays key information, recent activities, appointment updates, notifications, and quick access to important pet management features within the WonderPets system.</p>
               <div class="screen-thumb">
-                <img src="dashboard.png" alt="Dashboard"
-                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Dashboard'">
+                <img src="dashboard.png" alt="Dashboard" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Dashboard'">
               </div>
             </div>
           </div>
 
-          <!-- Step 04 -->
           <div class="step">
             <div class="step-line"></div>
             <div class="step-number-bubble done">04</div>
@@ -436,13 +446,11 @@
               <h4>Book an Appointment</h4>
               <p>The appointment management page where users can view, schedule, and manage veterinary appointments for their pets quickly and conveniently.</p>
               <div class="screen-thumb">
-                <img src="appointment.png" alt="Book an Appointment"
-                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Book an Appointment'">
+                <img src="appointment.png" alt="Book an Appointment" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Book an Appointment'">
               </div>
             </div>
           </div>
 
-          <!-- Step 05 -->
           <div class="step">
             <div class="step-line"></div>
             <div class="step-number-bubble done">05</div>
@@ -451,13 +459,11 @@
               <h4>Appointment Form</h4>
               <p>This page allows users to provide complete owner and pet information required for scheduling a veterinary appointment. It includes fields for personal details, pet characteristics, and appointment-related information to ensure accurate and organized booking.</p>
               <div class="screen-thumb">
-                <img src="form.png" alt="Appointment Form"
-                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Appointment Form'">
+                <img src="form.png" alt="Appointment Form" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Appointment Form'">
               </div>
             </div>
           </div>
 
-          <!-- Step 06 — last, no line -->
           <div class="step">
             <div class="step-number-bubble done">06</div>
             <div class="step-content">
@@ -465,17 +471,14 @@
               <h4>Payment Method</h4>
               <p>This page allows users to choose their preferred payment option for the appointment, including bank transfer, e-wallet, or pay during visit, providing a flexible and convenient payment process.</p>
               <div class="screen-thumb">
-                <img src="payment method.png" alt="Payment Method"
-                     onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Payment Method'">
+                <img src="payment method.png" alt="Payment Method" onerror="this.style.display='none';this.closest('.screen-thumb').innerHTML='🖼 Screenshot: Payment Method'">
               </div>
             </div>
           </div>
 
-        </div><!-- end walkthrough-steps -->
+        </div>
 
-        <!-- RIGHT: sticky sidebar -->
         <div class="walkthrough-sidebar">
-
           <div class="card">
             <h3>🎬 Video Demonstration</h3>
             <p style="margin-bottom:0.75rem;">A screen recording demonstration of the prototype's complete user flow, narrated by the group.</p>
@@ -494,10 +497,8 @@
             <div class="instrument-item"><div class="instrument-icon icon-green" style="font-size:0.8rem;font-weight:700;color:#6ee7b7;">4</div><div><div class="instrument-label">Fills out the appointment form</div></div></div>
             <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">5</div><div><div class="instrument-label">Selects payment & confirms booking</div></div></div>
           </div>
-
-        </div><!-- end walkthrough-sidebar -->
-
-      </div><!-- end walkthrough-layout -->
+        </div>
+      </div>
     </div>
   </section>
 
@@ -510,31 +511,40 @@
       <h2 class="section-title">Team Reflections</h2>
       <p class="section-desc">Personal insights from each group member on the evaluation process, challenges, and learnings.</p>
 
-      <div class="grid-2">
+      <!-- ── FIXED: uniform 2×2 grid, equal-height cards, scrollable text ── -->
+      <div class="reflections-grid">
+
         <div class="reflection-card">
-          <div class="reflection-text">Replace this with your personal reflection on the project. What did you learn from conducting the heuristic evaluation? What was challenging?</div>
+          <div class="reflection-body">
+            Conducting the heuristic evaluation for the WonderPets System became a valuable learning experience for me. I learned how important usability is in creating a system that is not only functional but also easy and comfortable for users to navigate. Through the evaluation process, I realized that even small interface details, such as button placement, feedback messages, and consistency of design, can greatly affect the overall user experience. It also helped me understand the importance of applying Nielsen's usability heuristics in identifying possible issues and improving the quality of the system.
+
+            One of the challenges we encountered was carefully analyzing every part of the system while considering the perspective of different users. Since we wanted the system to be user-friendly for both pet owners and administrators, we had to pay attention to how each feature would be understood and used. Another challenge was organizing our observations and recommendations in a clear and professional manner during the evaluation process. The experience of formulating the results was also challenging because we needed to review the findings carefully, categorize the usability issues properly, and provide realistic recommendations for improvement. It required teamwork, critical thinking, and attention to detail to make sure that the evaluation results were accurate and meaningful.
+          </div>
           <div class="reflection-author">Rica Rose Vipinoso <span>· Team Leader</span></div>
         </div>
+
         <div class="reflection-card">
-          <div class="reflection-text">Replace this with your personal reflection. Focus on the usability testing experience — what surprised you about how real users interacted with the prototype?</div>
+          <div class="reflection-body">
+            During the presentation of our project, we were surprised on the positive feedbacks from our respondents. Although the presentation was done online, most of the respondents were satisfied on the design and functionality of the project, while giving their own insights for minor updates or changes for improvement. What they liked most about the project is the simplicity of the overall layout design and how the interactions and function were implemented.
+          </div>
           <div class="reflection-author">Jerome Arayon <span>· Member</span></div>
         </div>
-        <div class="reflection-card">
-          <div class="reflection-text">Share your reflection on building the reporting site itself — how did structuring the information help you understand the evaluation findings more deeply?</div>
+
+       <div class="reflection-card">
+          <div class="reflection-body">
+           The development of our Wonder Pets project became a valuable learning experience for our group. We developed a prototype veterinary system that allows users to schedule online appointments more easily. Through our presentation in Google Meet and the feedback we received from students of Partido State University, we improved our teamwork, communication, and problem-solving skills. This project also helped us understand how technology can make services more convenient and accessible to users.
+          </div>
           <div class="reflection-author">Ellen Dela Cruz <span>· Member</span></div>
         </div>
+
         <div class="reflection-card">
-          <div class="reflection-text">Reflect on the data analysis phase. How did you interpret the qualitative and quantitative findings? What patterns did you notice?</div>
+          <div class="reflection-body">
+            Working on our project, Wonder Pets, was a great learning experience for our group. We created a prototype veterinary system that allows users to set online appointments more conveniently. Through our online presentation in Google Meet and the feedback from students of Partido State University, we improved our communication, teamwork, and problem-solving skills. This project helped us realize how technology can make services easier and more accessible for people
+          </div>
           <div class="reflection-author">John Kendric Pahuyo <span>· Member</span></div>
         </div>
-      </div>
 
-      <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:3rem 0 1rem;font-size:1.1rem;">Additional Findings</h3>
-      <div class="grid-3">
-        <div class="card"><h3>💡 Positive Feedback</h3><p>Describe any positive aspects noted by participants during usability testing.</p></div>
-        <div class="card"><h3>🔄 Unexpected Patterns</h3><p>Describe any surprising behavior or feedback that emerged during testing.</p></div>
-        <div class="card"><h3>🚀 Future Improvements</h3><p>Describe longer-term design improvements for a future iteration.</p></div>
-      </div>
+      </div><!-- end reflections-grid -->
 
       <div class="btn-row">
         <a href="Heuristic-Evaluation-Workbook.pdf" class="btn btn-primary" target="_blank">📄 Download Full Report (PDF)</a>
@@ -558,11 +568,8 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-   <script src="sus.js"></script>
+  <script src="sus.js"></script>
   <script src="script.js"></script>
- 
-
-
 
 </body>
 </html>

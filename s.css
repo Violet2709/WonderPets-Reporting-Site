@@ -246,14 +246,13 @@
   
   display: inline-block;
   padding: 14px 28px;
-  background: linear-gradient(135deg, #1d45ab, #1143c2); 
+  background: #378ADD; 
   color: #000000;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-weight: 600;
   font-size: 16px;
   text-decoration: none;
   border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
@@ -265,8 +264,7 @@
 
 /* Hover Effects */
 .btn-dashboard-primary:hover {
-  background: linear-gradient(135deg, #1d4ed8, #1e40af);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+  background: linear-gradient(135deg, #1d4ed8, #3052c2);
   transform: translateY(-1px);
 }
 
@@ -444,10 +442,18 @@
     }
 
     .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
     }
 
     /* ── DATA GATHERING ── */
@@ -815,8 +821,7 @@
     .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--soft); }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
-
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; align-items: center; }
     /* ── WALKTHROUGH — FIXED ── */
     #walkthrough { background: var(--bg); }
 
@@ -1399,5 +1404,4 @@
   color: var(--accent);
   margin: 2rem 0 0.75rem;
 }
-
 
