@@ -1040,4 +1040,324 @@
       .navbar { padding: 0 1rem; }
     }
 
+/* ════════════════════════════════════════════════════════════
+   SUS RESULTS SECTION — adapted to site variables
+   ════════════════════════════════════════════════════════════ */
+
+.sus-results-wrap { font-family: 'DM Sans', sans-serif; }
+
+/* ── KPI Cards ── */
+.sus-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.sus-kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.sus-kpi:hover { border-color: var(--accent); }
+.sus-kpi .kpi-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.sus-kpi .kpi-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+.sus-kpi.green  { border-top: 3px solid #1D9E75; }
+.sus-kpi.green  .kpi-num { color: #0a6644; }
+.sus-kpi.purple { border-top: 3px solid var(--accent3); }
+.sus-kpi.purple .kpi-num { color: var(--accent3); }
+.sus-kpi.orange { border-top: 3px solid #D85A30; }
+.sus-kpi.orange .kpi-num { color: #b54420; }
+.sus-kpi.amber  { border-top: 3px solid var(--warn); }
+.sus-kpi.amber  .kpi-num { color: var(--warn); }
+
+/* ── Gauge ── */
+.sus-gauge-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin: 2rem 0;
+}
+@media (max-width: 680px) { .sus-gauge-row { grid-template-columns: 1fr; } }
+
+.sus-gauge-block { text-align: center; }
+.sus-gauge-canvas { position: relative; display: inline-block; }
+#susGaugeEl { display: block; margin: 0 auto; }
+.sus-gauge-overlay {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+.sus-gauge-overlay .g-big {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+.sus-gauge-overlay .g-sub { font-size: 0.75rem; color: var(--muted); }
+.sus-grade-pill {
+  display: inline-block;
+  margin-top: 0.75rem;
+  background: rgba(14,165,114,0.12);
+  color: #065f46;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 5px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(14,165,114,0.3);
+}
+.sus-scale-vis { margin-top: 1rem; }
+.sus-scale-track {
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(to right, #e74c3c 0%, #f39c12 35%, #1D9E75 60%, #065f46 100%);
+  margin: 0.5rem 0 0.4rem;
+}
+.sus-scale-needle {
+  position: absolute;
+  top: -5px;
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  background: var(--text);
+  left: 72.625%;
+  transform: translateX(-50%);
+}
+.sus-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.sus-scale-bands {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  margin-top: 6px;
+}
+.sus-scale-bands span { color: var(--soft); }
+
+/* ── Interpretation ── */
+.sus-interp-info h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.sus-interp-info p { font-size: 0.88rem; color: var(--soft); line-height: 1.7; margin-bottom: 0.75rem; }
+.sus-interp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 1rem;
+}
+.sus-icard {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+}
+.sus-icard.active-card {
+  background: rgba(14,165,114,0.1);
+  border-color: #1D9E75;
+  color: #065f46;
+}
+.sus-icard .ic-grade { font-weight: 700; font-size: 0.88rem; margin-bottom: 2px; }
+
+/* ── Chart cards ── */
+.sus-chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem;
+  margin: 1.5rem 0;
+  transition: border-color 0.2s;
+}
+.sus-chart-card:hover { border-color: var(--accent); }
+.sus-chart-card h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.sus-chart-wrap { position: relative; }
+
+/* ── Question tabs ── */
+.sus-q-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin: 1.5rem 0 1rem;
+}
+.sus-q-tab {
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.sus-q-tab:hover { color: var(--accent); }
+.sus-q-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.sus-q-panel { display: none; }
+.sus-q-panel.active { display: block; }
+.sus-q-list { display: grid; gap: 0.75rem; }
+.sus-q-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  flex-wrap: wrap;
+  transition: border-color 0.2s;
+}
+.sus-q-row:hover { border-color: var(--accent); }
+.sus-q-num { font-size: 0.72rem; font-weight: 700; color: var(--muted); min-width: 26px; }
+.sus-q-text { font-size: 0.83rem; color: var(--text); flex: 1; min-width: 120px; line-height: 1.45; }
+.sus-q-type {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sus-q-type.pos { background: rgba(14,165,114,0.12); color: #065f46; border: 1px solid rgba(14,165,114,0.3); }
+.sus-q-type.neg { background: rgba(220,38,38,0.10);  color: #991b1b; border: 1px solid rgba(220,38,38,0.25); }
+.sus-q-bar-wrap { width: 120px; height: 7px; border-radius: 4px; background: var(--surface2); flex-shrink: 0; }
+.sus-q-bar { height: 100%; border-radius: 4px; }
+.sus-q-score { font-size: 0.88rem; font-weight: 600; min-width: 30px; text-align: right; }
+
+/* ── Demographics ── */
+.sus-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin: 1.5rem 0;
+}
+.sus-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 0.75rem; color: var(--muted); }
+.sus-legend-dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 4px; }
+
+/* ── Score table (sus- prefix avoids conflict with site's global table/th/td) ── */
+.sus-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+.sus-resp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.sus-resp-table th {
+  text-align: left;
+  padding: 9px 11px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  white-space: nowrap;
+}
+.sus-resp-table td {
+  padding: 9px 11px;
+  color: var(--soft);
+  border-bottom: 1px solid rgba(168,212,240,0.5);
+  word-break: normal;
+}
+.sus-resp-table td:first-child { color: var(--muted); font-weight: 400; }
+.sus-resp-table tr:last-child td { border-bottom: none; }
+.sus-resp-table tr:hover td { background: rgba(26,127,212,0.04); }
+.sus-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+/* ── Quote cards ── */
+.sus-quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.1rem;
+  margin: 1.2rem 0;
+}
+.sus-quote-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.sus-quote-card:hover { border-color: var(--accent); }
+.sus-quote-card::before {
+  content: '\201C';
+  position: absolute;
+  top: -12px; right: 14px;
+  font-size: 4.5rem;
+  color: var(--surface2);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.sus-quote-card p { font-size: 0.85rem; color: var(--soft); line-height: 1.65; position: relative; }
+.sus-quote-card .qmeta { font-size: 0.72rem; color: var(--muted); margin-top: 8px; font-weight: 500; }
+
+/* ── Suggestion list ── */
+.sus-suggest-list { display: grid; gap: 0.75rem; margin: 1.2rem 0; }
+.sus-suggest-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  transition: border-color 0.2s;
+}
+.sus-suggest-item:hover { border-color: var(--accent); }
+.sus-suggest-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.sus-suggest-text { font-size: 0.85rem; color: var(--soft); line-height: 1.6; }
+
+/* ── Sub-label ── */
+.sus-sub-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin: 2rem 0 0.75rem;
+}
+
 
